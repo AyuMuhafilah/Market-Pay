@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Dompet -->
+    <path
+        android:fillColor="@color/yellow"
+        android:strokeColor="@color/oranye"
+        android:strokeWidth="0.5"
+        android:pathData="M2,7c0,-1.1 0.9,-2 2,-2h14c1.1,0 2,0.9 2,2v10c0,1.1 -0.9,2 -2,2H4c-1.1,0 -2,-0.9 -2,-2V7z" />
+
+    <!-- Lingkaran tambah -->
+    <path
+        android:fillColor="@color/oranye"
+        android:pathData="M17,17m-4,0a4,4 0 1,0 8,0a4,4 0 1,0 -8,0" />
+
+    <!-- Simbol tambah -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="1"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M17,15v4M15,17h4" />
+</vector>

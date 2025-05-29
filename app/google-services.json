@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "351356218034",
+    "firebase_url": "https://marketpay-ayy-default-rtdb.firebaseio.com",
+    "project_id": "marketpay-ayy",
+    "storage_bucket": "marketpay-ayy.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351356218034:android:34a37d4b5933df37b2b7ab",
+        "android_client_info": {
+          "package_name": "com.example.market_pay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351356218034-g7b9f75up349i0mifkon2ocqdgab854v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl9o4hdvLfDN1QOHkaW-W1etROqzHN540"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351356218034-g7b9f75up349i0mifkon2ocqdgab854v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

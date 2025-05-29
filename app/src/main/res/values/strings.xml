@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">Market Pay</string>
+    <string name="logo_description">MarketPay Logo</string>
+    <string name="username_hint">Username</string>
+    <string name="nama_hint">Nama Lengkap</string>
+    <string name="hp_hint">No Hp</string>
+    <string name="password_hint">Password</string>
+    <string name="email_hint">Email</string>
+    <string name="forgot_password">Forgot Password </string>
+    <string name="create_account">Create Account</string>
+    <string name="login">Login</string>
+    <string name="signin">Register</string>
+    <string name="have_account">Have an Account? Log In</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="back">Kembali</string>
+    <string name="txtForgotPassword">Silakan isi email untuk menerima link Reset Password.</string>
+    <string name="profile">User Profile</string>
+    <string name="nama">Ayu Muhafilah</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="fragmentAdmin">Hello Admin</string>
+    <string name="fragmentMerchant">Hello Merchant</string>
+    <string name="fragmentCustomer">Hello Customer</string>
+    <string name="default_web_client_id">351356218034-g7b9f75up349i0mifkon2ocqdgab854v.apps.googleusercontent.com</string>
+
+    <!--    Merchant -->
+    <string name="regist_merchant">Daftar Merchant</string>
+    <string name="nik">NIK</string>
+    <string name="text_merchant">Silahkan isi form dibawah ini untuk mendaftar sebagai Merchant.</string>
+    <string name="alamat_hint">Alamat</string>
+    <string name="daftar">Daftar</string>
+    <string name="provinsiModel">Pilih Provinsi</string>
+    <string name="kabupatenModel">Pilih Kabupaten</string>
+    <string name="kecamatanModel">Pilih Kecamatan</string>
+    <string name="kelurahanModel">Pilih Kelurahan</string>
+    <string name="jk">Jenis Kelamin</string>
+    <string name="l">Laki - Laki</string>
+    <string name="p">Perempuan</string>
+    <string name="tmp">Tempat Lahir</string>
+    <string name="tgl">Tanggal Lahir</string>
+    <string name="rt">RT / RW</string>
+    <string name="nama_usaha">Nama Usaha</string>
+    <string name="desk_usaha">Deskripsi Usaha</string>
+    <string name="buka">Jam Buka</string>
+    <string name="tutup">Jam Tutup</string>
+    <string name="alamat_l">Alamat Lengkap</string>
+    <string name="total_saldo">Total Saldo</string>
+    <string name="pilih_merchant">Pilih Merchant</string>
+    <string name="trans">Transaksi</string>
+    <string name="keluar">Keluar</string>
+    <string name="pengaturan">Pengaturan</string>
+    <string name="daftarMerchant">Daftar Merchant</string>
+    <string name="dataPribadi">Data Pribadi</string>
+
+</resources>
