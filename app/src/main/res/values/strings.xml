@@ -33,7 +33,7 @@
     <string name="provinsiModel">Pilih Provinsi</string>
     <string name="kabupatenModel">Pilih Kabupaten</string>
     <string name="kecamatanModel">Pilih Kecamatan</string>
-    <string name="kelurahanModel">Pilih Kelurahan</string>
+    <string name="kelurahanModel">Pilih Desa / Kelurahan</string>
     <string name="jk">Jenis Kelamin</string>
     <string name="l">Laki - Laki</string>
     <string name="p">Perempuan</string>
@@ -52,5 +52,6 @@
     <string name="pengaturan">Pengaturan</string>
     <string name="daftarMerchant">Daftar Merchant</string>
     <string name="dataPribadi">Data Pribadi</string>
+    <string name="detAlamat">Detail Lainnya (Nama Jalan/No Rumah)</string>
 
 </resources>

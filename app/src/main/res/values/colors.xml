@@ -5,7 +5,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#276e4c</color>
     <color name="green_old">#17452F</color>
-    <color name="gray">#CCCCCC</color>
+    <color name="gray">#E3E3E6</color>
     <color name="oranye">#FF5722</color>
     <color name="yellow">#FFC107</color>
 </resources>

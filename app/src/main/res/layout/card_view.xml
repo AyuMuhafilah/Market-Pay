@@ -11,12 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:cardElevation="4dp"
         app:cardCornerRadius="8dp"
-        android:background="@android:color/white"
         app:strokeWidth="4dp"
         app:strokeColor="@color/green"
         app:cardUseCompatPadding="true"
+        android:backgroundTint="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
