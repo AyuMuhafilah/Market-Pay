@@ -36,7 +36,7 @@ public class PengeluaranFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pemasukan, container, false);
+        View view = inflater.inflate(R.layout.fragment_pengeluaran, container, false);
         // Inisialisasi Firestore
         db = FirebaseFirestore.getInstance();
         String userIdLogin = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -51,6 +51,7 @@ public class PengeluaranFragment extends Fragment {
                 .orderBy("tgl", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    containerCards.setVisibility(View.VISIBLE);
                     containerCards.removeAllViews();
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         String keterangan = doc.getString("jenis");

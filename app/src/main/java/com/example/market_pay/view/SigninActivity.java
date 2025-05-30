@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.market_pay.R;
+import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.LoadingDialog;
 import com.example.market_pay.utils.Toast;
 import com.example.market_pay.model.UserModel;
@@ -82,16 +83,13 @@ public class SigninActivity extends AppCompatActivity {
             Toast.getInstance(this).showToast("Data Tidak Boleh Ada yang Kosong");
             return;
         }
-        if (noHp.length() < 11 || noHp.length() > 13) {
-            Toast.getInstance(this).showToast("Nomor HP tidak valid");
+        if (!AppUtils.validateNoHp(this, noHp)) {
             return;
         }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.getInstance(this).showToast("Email tidak valid");
+        if (!AppUtils.validateEmail(this, email)) {
             return;
         }
-        if (password.length() < 6){
-            Toast.getInstance(this).showToast("Password Minimal 6 Karakter");
+        if (!AppUtils.validatePassword(this, password)) {
             return;
         }
         loadingDialog.show();

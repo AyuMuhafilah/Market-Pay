@@ -46,12 +46,11 @@
                     app:strokeWidth="3dp" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/namaUser"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="@string/nama"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     tools:ignore="RtlSymmetry"/>
@@ -75,7 +74,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingVertical="16dp">
+            android:paddingVertical="16dp"
+            android:background="@drawable/item_background"
+            android:clickable="true"
+            android:focusable="true">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -105,14 +107,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingVertical="16dp">
+            android:paddingVertical="16dp"
+            android:background="@drawable/item_background"
+            android:clickable="true"
+            android:focusable="true">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="@string/daftarMerchant"
                 android:gravity="center_vertical"
                 android:drawablePadding="10dp"
+                android:text="@string/daftarMerchant"
                 android:drawableStart="@drawable/ic_store"
                 android:drawableTint="@color/black"
                 android:textColor="@color/black"
@@ -134,7 +139,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingVertical="16dp">
+            android:paddingVertical="16dp"
+            android:background="@drawable/item_background"
+            android:clickable="true"
+            android:focusable="true">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -163,7 +171,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingVertical="16dp">
+            android:paddingVertical="16dp"
+            android:background="@drawable/item_background"
+            android:clickable="true"
+            android:focusable="true">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

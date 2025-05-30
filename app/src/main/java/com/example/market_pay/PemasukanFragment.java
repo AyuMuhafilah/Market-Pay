@@ -49,6 +49,7 @@ public class PemasukanFragment extends Fragment {
                 .orderBy("tgl", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    containerCards.setVisibility(View.VISIBLE);
                     containerCards.removeAllViews();
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
                         String keterangan = doc.getString("jenis");

@@ -41,7 +41,7 @@
                 }
             });
 
-            btnBack.setOnClickListener(v -> startActivity(new Intent(this, MainActivity.class)));
+            btnBack.setOnClickListener(v -> finish());
 
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
