@@ -2,12 +2,16 @@ package com.example.market_pay.view.customer;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,38 +21,66 @@ import com.example.market_pay.adapter.MerchantAdapter;
 import com.example.market_pay.model.UserModel;
 import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.ConfirmDialog;
+import com.example.market_pay.utils.GridUtils;
+import com.example.market_pay.utils.Toast;
 import com.example.market_pay.utils.UserUtils;
 import com.example.market_pay.view.HomeActivity;
+import com.example.market_pay.model.MerchantModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerFragment extends Fragment {
+
+    private static final String TAG = "CustomerFragment";
+
+    private RecyclerView recyclerView;
+    private FirebaseFirestore db;
+    private List<MerchantModel> merchantList;
 
     public CustomerFragment() {
         // Required empty public constructor
     }
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_customer, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_merchant);
+
+        recyclerView = view.findViewById(R.id.recycler_merchant);
         TextView namaUser = view.findViewById(R.id.textUser);
         TextInputEditText jmlSaldo = view.findViewById(R.id.txtSaldo);
+        ImageView btnLogout = view.findViewById(R.id.btnLogout);
+
+        db = FirebaseFirestore.getInstance();
+        merchantList = new ArrayList<>();
+
+        int numberOfColumns = calculateNoOfColumns(getContext(), 180);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), numberOfColumns);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        int spacingInPixels = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 12, getResources().getDisplayMetrics());
+        recyclerView.addItemDecoration(new GridUtils(numberOfColumns, spacingInPixels, true));
+
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         UserUtils.getUserData(userId, new UserUtils.UserDataCallback() {
             @Override
             public void onUserData(UserModel user) {
-                namaUser.setText(formatNama(user.getNama_lengkap()));
-                int saldo = user.getSaldo();
-                jmlSaldo.setText(AppUtils.formatRupiah(saldo));
+                if (user != null) {
+                    namaUser.setText(formatNama(user.getNama_lengkap()));
+                    int saldo = user.getSaldo();
+                    jmlSaldo.setText(AppUtils.formatRupiah(saldo));
+                } else {
+                    Toast.getInstance(getContext()).showToast("User Tidak Ditemukan");
+                }
             }
         });
-        // Logout
-        ImageView btnLogout = view.findViewById(R.id.btnLogout);
+
         btnLogout.setOnClickListener(v -> {
             ConfirmDialog.show(requireContext(), "Yakin ingin logout?", (dialog, which) -> {
                 if (requireActivity() instanceof HomeActivity) {
@@ -57,52 +89,62 @@ public class CustomerFragment extends Fragment {
             });
         });
 
-        int numberOfColumns = calculateNoOfColumns(getContext(), 180);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), numberOfColumns);
-        recyclerView.setLayoutManager(gridLayoutManager);
-
-        List<String> foodList = Arrays.asList("Burger", "Chicken Crispi", "Manisan", "Martabak", "Sate", "Street Food");
-        List<Integer> imageList = Arrays.asList(
-                R.drawable.img_burger,
-                R.drawable.img_chicken_crispy,
-                R.drawable.img_manisan,
-                R.drawable.img_martabak,
-                R.drawable.img_sate,
-                R.drawable.img_street_food
-        );
-        MerchantAdapter adapter = new MerchantAdapter(requireContext(), foodList, imageList);
-        recyclerView.setAdapter(adapter);
-        if (foodList.isEmpty()) {
-            recyclerView.setVisibility(View.GONE);
-        } else {
-            recyclerView.setVisibility(View.VISIBLE);
-        }
+        fetchMerchants();
 
         return view;
     }
 
     private int calculateNoOfColumns(Context context, float columnWidthDp) {
-        float screenWidthDp = context.getResources().getDisplayMetrics().widthPixels / context.getResources().getDisplayMetrics().density;
-        return Math.max(2, (int) (screenWidthDp / columnWidthDp)); // Minimum 2 columns
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int noOfColumns = (int) (dpWidth / columnWidthDp);
+        return Math.max(2, noOfColumns);
+    }
+
+    private void fetchMerchants() {
+        db.collection("merchants")
+                .whereEqualTo("status", true)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    merchantList.clear();
+                    for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                        MerchantModel merchant = doc.toObject(MerchantModel.class);
+                        if (merchant != null) {
+                            merchantList.add(merchant);
+                        }
+                    }
+                    List<String> foodList = new ArrayList<>();
+                    List<String> imageList = new ArrayList<>();
+                    for (MerchantModel m : merchantList) {
+                        foodList.add(m.getUsaha() != null ? m.getUsaha() : "Data Merchant Tidak Ada");
+                        imageList.add((m.getImage() != null && !m.getImage().isEmpty()) ? m.getImage() : "");
+                    }
+                    if (isAdded() && getContext() != null) {
+                        MerchantAdapter adapter = new MerchantAdapter(getContext(), foodList, imageList);
+                        recyclerView.setAdapter(adapter);
+                        if (merchantList.isEmpty()) {
+                            recyclerView.setVisibility(View.GONE);
+                        } else {
+                            recyclerView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if (isAdded() && getContext() != null) {
+                        Toast.getInstance(getContext()).showToast("Gagal Ambil Data: " + e.getMessage());
+                    }
+                });
     }
 
     public static String formatNama(String namaLengkap) {
         String[] kata = namaLengkap.split("\\s+");
-        if (kata.length < 2) {
-            // Kalau cuma 1 kata, tampilkan apa adanya
-            return namaLengkap;
-        }
-        // Dua kata pertama
-        String hasil = kata[0] + " " + kata[1] + " ";
-        StringBuilder inisial = new StringBuilder();
+        if (kata.length < 2) return namaLengkap;
+        StringBuilder hasil = new StringBuilder(kata[0] + " " + kata[1] + " ");
         for (int i = 2; i < kata.length; i++) {
-            inisial.append(Character.toUpperCase(kata[i].charAt(0)));
-            if (i < kata.length - 1) {
-                inisial.append(".");
-            }
+            hasil.append(Character.toUpperCase(kata[i].charAt(0)));
+            if (i < kata.length - 1) hasil.append(".");
         }
-        return hasil + inisial.toString();
+        return hasil.toString();
     }
-
 
 }
