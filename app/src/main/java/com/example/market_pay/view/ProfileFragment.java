@@ -1,4 +1,4 @@
-package com.example.market_pay;
+package com.example.market_pay.view;
 
 import static com.example.market_pay.view.customer.CustomerFragment.formatNama;
 
@@ -10,15 +10,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.market_pay.R;
 import com.example.market_pay.model.UserModel;
-import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.ConfirmDialog;
 import com.example.market_pay.utils.UserUtils;
-import com.example.market_pay.view.HomeActivity;
 import com.example.market_pay.view.customer.DaftarMerchantActivity;
 import com.google.firebase.auth.FirebaseAuth;
 

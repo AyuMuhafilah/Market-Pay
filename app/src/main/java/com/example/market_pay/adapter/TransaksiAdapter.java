@@ -4,8 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.market_pay.PemasukanFragment;
-import com.example.market_pay.PengeluaranFragment;
+import com.example.market_pay.view.PemasukanFragment;
+import com.example.market_pay.view.PengeluaranFragment;
 
 public class TransaksiAdapter extends FragmentStateAdapter {
 
