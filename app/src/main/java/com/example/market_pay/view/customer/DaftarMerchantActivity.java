@@ -42,15 +42,13 @@ public class DaftarMerchantActivity extends AppCompatActivity {
             startActivityForResult(intent, 100);  // 100 adalah requestCode bebas
         });
 
-
-
         new WilayahHelper(this);
         editTextDate = findViewById(R.id.editTextDate);
         editTextDate.setOnClickListener(v -> DatePicker.showDatePicker(this, editTextDate));
 
-        editTextTimeBuka = findViewById(R.id.editTextTimeBuka);
+        editTextTimeBuka = findViewById(R.id.txtBuka);
         editTextTimeBuka.setOnClickListener(v -> TimePicker.showTimePicker(this, editTextTimeBuka));
-        editTextTimeTutup = findViewById(R.id.editTextTimeTutup);
+        editTextTimeTutup = findViewById(R.id.txtTutup);
         editTextTimeTutup.setOnClickListener(v -> TimePicker.showTimePicker(this, editTextTimeTutup));
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -92,6 +90,4 @@ public class DaftarMerchantActivity extends AppCompatActivity {
         }
         return result;
     }
-
-
 }

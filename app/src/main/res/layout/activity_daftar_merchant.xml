@@ -119,6 +119,23 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:hint="@string/email_hint"
+                app:boxStrokeColor="@color/green"
+                app:hintTextColor="@color/green">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_email"
+                    android:drawablePadding="10dp"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:hint="@string/tmp"
                 app:boxStrokeColor="@color/green"
@@ -159,6 +176,7 @@
                 android:text="@string/jk"
                 android:layout_marginTop="10dp"/>
             <RadioGroup
+                android:id="@+id/pilihJk"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
@@ -188,89 +206,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputProv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/provinsiModel"
-                    app:boxStrokeColor="@color/green"
-                    app:hintTextColor="@color/green">
-                    <AutoCompleteTextView
-                        android:id="@+id/autoProv"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:inputType="text"
-                        android:paddingLeft="15dp"
-                        android:imeOptions="actionNext"
-                        android:drawablePadding="10dp"
-                        android:drawableStart="@drawable/ic_location"
-                        android:textColor="@color/black"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewProv"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:background="@drawable/border_recylerview"
-                    android:overScrollMode="ifContentScrolls"
-                    android:visibility="gone" />
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputKab"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/kabupatenModel"
-                    app:boxStrokeColor="@color/green"
-                    app:hintTextColor="@color/green">
-                    <AutoCompleteTextView
-                        android:id="@+id/autoKab"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:inputType="text"
-                        android:paddingLeft="15dp"
-                        android:drawablePadding="10dp"
-                        android:imeOptions="actionNext"
-                        android:drawableStart="@drawable/ic_location"
-                        android:textColor="@color/black"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewKab"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:background="@drawable/border_recylerview"
-                    android:overScrollMode="ifContentScrolls"
-                    android:visibility="gone" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputKec"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/kecamatanModel"
-                    app:boxStrokeColor="@color/green"
-                    app:hintTextColor="@color/green">
-                    <AutoCompleteTextView
-                        android:id="@+id/autoKec"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:inputType="text"
-                        android:paddingLeft="15dp"
-                        android:drawablePadding="10dp"
-                        android:imeOptions="actionNext"
-                        android:drawableStart="@drawable/ic_location"
-                        android:textColor="@color/black"/>
-                </com.google.android.material.textfield.TextInputLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewKec"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:background="@drawable/border_recylerview"
-                    android:overScrollMode="ifContentScrolls"
-                    android:visibility="gone" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textInputKel"
+                    android:id="@+id/txtLayoutDesa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -278,7 +214,7 @@
                     app:boxStrokeColor="@color/green"
                     app:hintTextColor="@color/green">
                     <AutoCompleteTextView
-                        android:id="@+id/autoKel"
+                        android:id="@+id/txtDesa"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:inputType="text"
@@ -311,6 +247,24 @@
                         android:inputType="text"
                         android:drawableStart="@drawable/ic_location"
                         android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textInputLayoutDetAlamat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/detAlamat"
+                    android:layout_marginTop="10dp"
+                    app:boxStrokeColor="@color/green"
+                    app:hintTextColor="@color/green">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtDetAlamat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minLines="3"
+                        android:gravity="top|start"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -371,7 +325,7 @@
                     app:boxStrokeColor="@color/green"
                     app:hintTextColor="@color/green">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextTimeBuka"
+                        android:id="@+id/txtBuka"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clickable="true"
@@ -391,7 +345,7 @@
                     app:boxStrokeColor="@color/green"
                     app:hintTextColor="@color/green">
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextTimeTutup"
+                        android:id="@+id/txtTutup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:clickable="true"
@@ -426,7 +380,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/btnRegister"
+                android:id="@+id/btnDaftarMerchant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
