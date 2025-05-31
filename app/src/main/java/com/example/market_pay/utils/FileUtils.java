@@ -1,2 +1,24 @@
-package com.example.market_pay.utils;public class FileUtils {
+package com.example.market_pay.utils;
+
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
+
+import androidx.annotation.Nullable;
+
+public class FileUtils {
+    @Nullable
+    public static String getPath(Context context, Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+            return filePath;
+        }
+        return null;
+    }
 }
