@@ -159,7 +159,7 @@
                 app:boxStrokeColor="@color/green"
                 app:hintTextColor="@color/green">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextDate"
+                    android:id="@+id/txtTglLahir"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="false"
@@ -300,7 +300,7 @@
                 app:boxStrokeColor="@color/green"
                 app:hintTextColor="@color/green">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextDescription"
+                    android:id="@+id/deskUsaha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:minLines="3"

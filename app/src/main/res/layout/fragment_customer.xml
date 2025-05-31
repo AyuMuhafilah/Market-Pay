@@ -47,16 +47,6 @@
                 app:strokeColor="@android:color/white"
                 app:strokeWidth="3dp" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/textUser"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="1"-->
-<!--                android:drawableEnd="@drawable/ic_logout"-->
-<!--                android:gravity="center_vertical"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textSize="24sp" />-->
-
             <TextView
                 android:id="@+id/textUser"
                 android:layout_width="0dp"
@@ -72,7 +62,8 @@
                 android:src="@drawable/ic_logout"
                 android:padding="8dp"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:contentDescription="logout"/>
 
         </LinearLayout>
         <androidx.cardview.widget.CardView

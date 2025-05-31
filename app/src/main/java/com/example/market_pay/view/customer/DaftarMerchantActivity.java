@@ -5,8 +5,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -14,16 +17,43 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.market_pay.R;
+import com.example.market_pay.helper.CloudinaryHelper;
 import com.example.market_pay.helper.WilayahHelper;
+import com.example.market_pay.model.MerchantModel;
+import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.DatePicker;
+import com.example.market_pay.utils.FileUtils;
+import com.example.market_pay.utils.LoadingDialog;
 import com.example.market_pay.utils.TimePicker;
+import com.example.market_pay.utils.Toast;
+import com.example.market_pay.view.HomeActivity;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class DaftarMerchantActivity extends AppCompatActivity {
 
-    private TextInputEditText editTextDate, pilihFile;
-    private EditText editTextTimeBuka, editTextTimeTutup;
+    private TextInputEditText editTextDate, pilihFile, txtNik, txtNama, txtNoHp, txtEmail, txtTmpLahir,
+            txtTglLahir, txtRtRw, txtDetAlamat, txtUsaha, txtDeskUsaha, txtBuka, txtTutup, txtGambar;
+    private AutoCompleteTextView txtDesa;
+    private RadioGroup txtJk;
+    private Button btnDaftar;
     private ImageView back;
+    private Uri gambarUri = null;
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,32 +74,48 @@ public class DaftarMerchantActivity extends AppCompatActivity {
     private void initViews() {
         back = findViewById(R.id.iconBack);
         pilihFile = findViewById(R.id.pilihFile);
-        editTextDate = findViewById(R.id.editTextDate);
-        editTextTimeBuka = findViewById(R.id.txtBuka);
-        editTextTimeTutup = findViewById(R.id.txtTutup);
+        editTextDate = findViewById(R.id.txtTglLahir);
+        txtBuka = findViewById(R.id.txtBuka);
+        txtTutup = findViewById(R.id.txtTutup);
+        btnDaftar = findViewById(R.id.btnDaftarMerchant);
+        txtNik = findViewById(R.id.txtNik);
+        txtNama = findViewById(R.id.txtNamaLengkap);
+        txtNoHp = findViewById(R.id.txtNoHp);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtTmpLahir = findViewById(R.id.txtTmpLahir);
+        txtTglLahir = findViewById(R.id.txtTglLahir);
+        txtJk = findViewById(R.id.pilihJk);
+        txtDesa = findViewById(R.id.txtDesa);
+        txtRtRw = findViewById(R.id.txtRtRw);
+        txtDetAlamat = findViewById(R.id.txtDetAlamat);
+        txtUsaha = findViewById(R.id.txtNamaUsaha);
+        txtDeskUsaha = findViewById(R.id.deskUsaha);
+        txtBuka = findViewById(R.id.txtBuka);
+        txtTutup = findViewById(R.id.txtTutup);
+        txtGambar = findViewById(R.id.pilihFile);
+        loadingDialog = new LoadingDialog(this);
     }
 
     private void setListeners() {
         back.setOnClickListener(v -> finish());
-
         pilihFile.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(intent, 100);
         });
-
         editTextDate.setOnClickListener(v -> DatePicker.showDatePicker(this, editTextDate));
-
-        editTextTimeBuka.setOnClickListener(v -> TimePicker.showTimePicker(this, editTextTimeBuka));
-        editTextTimeTutup.setOnClickListener(v -> TimePicker.showTimePicker(this, editTextTimeTutup));
+        editTextDate.setOnClickListener(v -> DatePicker.showDatePicker(this, editTextDate));
+        txtBuka.setOnClickListener(v -> TimePicker.showTimePicker(this, txtBuka));
+        txtTutup.setOnClickListener(v -> TimePicker.showTimePicker(this, txtTutup));
+        btnDaftar.setOnClickListener(v -> formValidasi());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
-            Uri fileUri = data.getData();
-            String fileName = getFileName(fileUri);
+            gambarUri = data.getData();
+            String fileName = getFileName(gambarUri);
             pilihFile.setText(fileName);
         }
     }
@@ -90,5 +136,71 @@ public class DaftarMerchantActivity extends AppCompatActivity {
             result = uri.getLastPathSegment();
         }
         return result;
+    }
+
+    private void formValidasi() {
+        String nik = txtNik.getText().toString().trim();
+        String nama = txtNama.getText().toString().trim();
+        String noHp = txtNoHp.getText().toString().trim();
+        String email = txtEmail.getText().toString().trim();
+        String tmpLahir = txtTmpLahir.getText().toString().trim();
+        String tglLahir = txtTglLahir.getText().toString().trim();
+        String jk = (txtJk.getCheckedRadioButtonId() != -1) ?
+                ((RadioButton) findViewById(txtJk.getCheckedRadioButtonId())).getText().toString().trim() : "";
+        String desa = txtDesa.getText().toString().trim();
+        String rtRw = txtRtRw.getText().toString().trim();
+        String detAlamat = txtDetAlamat.getText().toString().trim();
+        String usaha = txtUsaha.getText().toString().trim();
+        String deskUsaha = txtDeskUsaha.getText().toString().trim();
+        String buka = txtBuka.getText().toString().trim();
+        String tutup = txtTutup.getText().toString().trim();
+        String gambar = txtGambar.getText().toString().trim();
+
+        if (nik.isEmpty() || nama.isEmpty() || noHp.isEmpty() || email.isEmpty() ||
+                tmpLahir.isEmpty() || tglLahir.isEmpty() || jk.isEmpty() || desa.isEmpty() ||
+                rtRw.isEmpty() || detAlamat.isEmpty() || usaha.isEmpty() || deskUsaha.isEmpty() ||
+                buka.isEmpty() || tutup.isEmpty() || gambar.isEmpty()) {
+            Toast.getInstance(this).showToast("Data Tidak Boleh Ada yang Kosong");
+            return;
+        }
+        if (!AppUtils.validateNik(this, nik)) return;
+        if (!AppUtils.validateNoHp(this, noHp)) return;
+        if (!AppUtils.validateEmail(this, email)) return;
+        if (!AppUtils.validateImage(this, gambarUri)) return;
+        simpanData(usaha, deskUsaha, buka, tutup);
+    }
+
+    private void simpanData(String usaha, String deskUsaha, String buka, String tutup) {
+        loadingDialog.show();
+        CloudinaryHelper.uploadImage(this, gambarUri, new CloudinaryHelper.OnUploadCompleteListener() {
+            @Override
+            public void onSuccess(String imageUrl) {
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                simpanDataKeFirestore(userId, usaha, deskUsaha, buka, tutup, imageUrl);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                loadingDialog.dismiss();
+                Toast.getInstance(DaftarMerchantActivity.this).showToast(errorMessage);
+            }
+        });
+    }
+
+    private void simpanDataKeFirestore(String userId, String usaha, String deskripsi,
+                                       String buka, String tutup, String imageUrl) {
+        MerchantModel merchant = new MerchantModel(userId, usaha, deskripsi, buka, tutup, imageUrl, false);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("merchants").document(userId)
+                .set(merchant)
+                .addOnSuccessListener(aVoid -> {
+                    loadingDialog.dismiss();
+                    Toast.getInstance(this).showToast("Data merchant berhasil disimpan, tunggu validasi Admin!!!");
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    loadingDialog.dismiss();
+                    Toast.getInstance(this).showToast("Gagal menyimpan data merchant");
+                });
     }
 }

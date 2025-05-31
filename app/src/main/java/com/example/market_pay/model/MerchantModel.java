@@ -7,18 +7,20 @@ public class MerchantModel {
     private String buka;
     private String tutup;
     private String image;
+    private Boolean sts_merchant;
 
     public MerchantModel() {
     }
 
-    // Konstruktor lengkap
-    public MerchantModel(String userId, String usaha, String deskripsi, String buka, String tutup, String image) {
+    // Konstruktor lengkap: parameter status disamakan ke Boolean
+    public MerchantModel(String userId, String usaha, String deskripsi, String buka, String tutup, String image, Boolean sts_merchant) {
         this.userId = userId;
         this.usaha = usaha;
         this.deskripsi = deskripsi;
         this.buka = buka;
         this.tutup = tutup;
         this.image = image;
+        this.sts_merchant = sts_merchant;
     }
 
     // Getter dan Setter
@@ -69,7 +71,12 @@ public class MerchantModel {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public Boolean getStatus() {
+        return sts_merchant;
+    }
+
+    public void setStatus(Boolean status) {
+        this.sts_merchant = status;
+    }
 }
-
-
-
