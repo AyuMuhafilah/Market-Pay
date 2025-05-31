@@ -22,27 +22,12 @@ import com.example.market_pay.helper.WilayahHelper;
 import com.example.market_pay.model.MerchantModel;
 import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.DatePicker;
-import com.example.market_pay.utils.FileUtils;
 import com.example.market_pay.utils.LoadingDialog;
 import com.example.market_pay.utils.TimePicker;
 import com.example.market_pay.utils.Toast;
-import com.example.market_pay.view.HomeActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import org.json.JSONObject;
-
-import java.io.File;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class DaftarMerchantActivity extends AppCompatActivity {
 
