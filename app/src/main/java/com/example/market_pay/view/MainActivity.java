@@ -30,7 +30,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private TextView txtEmail, txtPassword, txtCreateAccount, txtForgotPassword;
@@ -195,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                         .get()
                         .addOnSuccessListener(documentSnapshot -> {
                             if (!documentSnapshot.exists()) {
-                                UserModel userModelData = new UserModel(userId, email, namaLengkap, "", "customer", foto,0);
+                                UserModel userModelData = new UserModel(userId, email, namaLengkap, "", "customer", foto,0,"","","","","","","");
                                 FirebaseFirestore.getInstance().collection("users")
                                         .document(userId)
                                         .set(userModelData)

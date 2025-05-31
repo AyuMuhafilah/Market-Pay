@@ -2,7 +2,6 @@ package com.example.market_pay.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,7 +21,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 
 public class SigninActivity extends AppCompatActivity {
     private TextInputEditText txtNamaLengkap, txtNoHp, txtEmail, txtPassword;
@@ -97,7 +95,7 @@ public class SigninActivity extends AppCompatActivity {
         .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String userId = mAuth.getCurrentUser().getUid();
-                UserModel userModel = new UserModel(userId, email, namaLengkap, noHp, "customer", "",0);
+                UserModel userModel = new UserModel(userId, email, namaLengkap, noHp, "customer", "",0,"","","","","","","");
                 firestore.collection("users")
                 .document(userId)
                 .set(userModel)

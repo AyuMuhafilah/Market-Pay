@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,16 +16,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.market_pay.R;
 import com.example.market_pay.helper.CloudinaryHelper;
 import com.example.market_pay.helper.WilayahHelper;
 import com.example.market_pay.model.MerchantModel;
+import com.example.market_pay.model.UserModel;
 import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.DatePicker;
 import com.example.market_pay.utils.LoadingDialog;
 import com.example.market_pay.utils.TimePicker;
 import com.example.market_pay.utils.Toast;
+import com.example.market_pay.utils.UserUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,10 +39,12 @@ public class DaftarMerchantActivity extends AppCompatActivity {
             txtTglLahir, txtRtRw, txtDetAlamat, txtUsaha, txtDeskUsaha, txtBuka, txtTutup, txtGambar;
     private AutoCompleteTextView txtDesa;
     private RadioGroup txtJk;
+    private RadioButton jkp, jkl;
     private Button btnDaftar;
     private ImageView back;
     private Uri gambarUri = null;
     private LoadingDialog loadingDialog;
+    private RecyclerView recyclerViewKel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,7 @@ public class DaftarMerchantActivity extends AppCompatActivity {
 
         initViews();
         setListeners();
+        tampilData();
         new WilayahHelper(this);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -70,6 +77,8 @@ public class DaftarMerchantActivity extends AppCompatActivity {
         txtTmpLahir = findViewById(R.id.txtTmpLahir);
         txtTglLahir = findViewById(R.id.txtTglLahir);
         txtJk = findViewById(R.id.pilihJk);
+        jkp = findViewById(R.id.P);
+        jkl = findViewById(R.id.L);
         txtDesa = findViewById(R.id.txtDesa);
         txtRtRw = findViewById(R.id.txtRtRw);
         txtDetAlamat = findViewById(R.id.txtDetAlamat);
@@ -79,6 +88,7 @@ public class DaftarMerchantActivity extends AppCompatActivity {
         txtTutup = findViewById(R.id.txtTutup);
         txtGambar = findViewById(R.id.pilihFile);
         loadingDialog = new LoadingDialog(this);
+        recyclerViewKel = findViewById(R.id.recyclerViewKel);
     }
 
     private void setListeners() {
@@ -103,6 +113,36 @@ public class DaftarMerchantActivity extends AppCompatActivity {
             String fileName = getFileName(gambarUri);
             pilihFile.setText(fileName);
         }
+    }
+
+    private void tampilData(){
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        UserUtils.getUserData(userId, new UserUtils.UserDataCallback() {
+            @Override
+            public void onUserData(UserModel user) {
+                if (user != null) {
+                    txtNik.setText(user.getNik());
+                    txtNama.setText(user.getNama_lengkap());
+                    txtNoHp.setText(user.getNo_hp());
+                    txtEmail.setText(user.getEmail());
+                    txtTmpLahir.setText(user.getTmp_lahir());
+                    txtTglLahir.setText(user.getTgl_lahir());
+                    String jk = user.getJk();
+                    if (jk != null) {
+                        if (jk.equalsIgnoreCase("Laki - laki")) {
+                            jkl.setChecked(true);
+                        } else if (jk.equalsIgnoreCase("Perempuan")) {
+                            jkp.setChecked(true);
+                        }
+                    }
+                    txtDesa.setText(user.getDesa());
+                    txtRtRw.setText(user.getRt());
+                    txtDetAlamat.setText(user.getDet_alamat());
+                } else {
+                    Toast.getInstance(DaftarMerchantActivity.this).showToast("User Tidak Ditemukan");
+                }
+            }
+        });
     }
 
     private String getFileName(Uri uri) {
@@ -161,7 +201,8 @@ public class DaftarMerchantActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String imageUrl) {
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                simpanDataKeFirestore(userId, usaha, deskUsaha, buka, tutup, imageUrl);
+                simpanDataMerchant(userId, usaha, deskUsaha, buka, tutup, imageUrl);
+                updateDataUser(userId);
             }
 
             @Override
@@ -172,7 +213,7 @@ public class DaftarMerchantActivity extends AppCompatActivity {
         });
     }
 
-    private void simpanDataKeFirestore(String userId, String usaha, String deskripsi,
+    private void simpanDataMerchant(String userId, String usaha, String deskripsi,
                                        String buka, String tutup, String imageUrl) {
         MerchantModel merchant = new MerchantModel(userId, usaha, deskripsi, buka, tutup, imageUrl, false);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -188,4 +229,38 @@ public class DaftarMerchantActivity extends AppCompatActivity {
                     Toast.getInstance(this).showToast("Gagal menyimpan data merchant");
                 });
     }
+
+    private void updateDataUser(String userId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String nik = txtNik.getText().toString().trim();
+        String nama = txtNama.getText().toString().trim();
+        String noHp = txtNoHp.getText().toString().trim();
+        String email = txtEmail.getText().toString().trim();
+        String tmpLahir = txtTmpLahir.getText().toString().trim();
+        String tglLahir = txtTglLahir.getText().toString().trim();
+        String desa = txtDesa.getText().toString().trim();
+        String rt = txtRtRw.getText().toString().trim();
+        String detAlamat = txtDetAlamat.getText().toString().trim();
+        String jk = "";
+        if (jkl.isChecked()) {
+            jk = "Laki - laki";
+        } else if (jkp.isChecked()) {
+            jk = "Perempuan";
+        }
+        // Update data user di Firestore
+        db.collection("users").document(userId)
+                .update(
+                        "nik", nik,
+                        "nama_lengkap", nama,
+                        "no_hp", noHp,
+                        "email", email,
+                        "tmp_lahir", tmpLahir,
+                        "tgl_lahir", tglLahir,
+                        "jk", jk,
+                        "desa", desa,
+                        "Rt", rt,
+                        "det_alamat", detAlamat
+                );
+    }
+
 }
