@@ -35,7 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DaftarMerchantActivity extends AppCompatActivity {
 
-    private TextInputEditText editTextDate, pilihFile, txtNik, txtNama, txtNoHp, txtEmail, txtTmpLahir,
+    private TextInputEditText txtNik, txtNama, txtNoHp, txtEmail, txtTmpLahir,
             txtTglLahir, txtRtRw, txtDetAlamat, txtUsaha, txtDeskUsaha, txtBuka, txtTutup, txtGambar;
     private AutoCompleteTextView txtDesa;
     private RadioGroup txtJk;
@@ -65,8 +65,6 @@ public class DaftarMerchantActivity extends AppCompatActivity {
 
     private void initViews() {
         back = findViewById(R.id.iconBack);
-        pilihFile = findViewById(R.id.pilihFile);
-        editTextDate = findViewById(R.id.txtTglLahir);
         txtBuka = findViewById(R.id.txtBuka);
         txtTutup = findViewById(R.id.txtTutup);
         btnDaftar = findViewById(R.id.btnDaftarMerchant);
@@ -93,13 +91,12 @@ public class DaftarMerchantActivity extends AppCompatActivity {
 
     private void setListeners() {
         back.setOnClickListener(v -> finish());
-        pilihFile.setOnClickListener(v -> {
+        txtGambar.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(intent, 100);
         });
-        editTextDate.setOnClickListener(v -> DatePicker.showDatePicker(this, editTextDate));
-        editTextDate.setOnClickListener(v -> DatePicker.showDatePicker(this, editTextDate));
+        txtTglLahir.setOnClickListener(v -> DatePicker.showDatePicker(this, txtTglLahir));
         txtBuka.setOnClickListener(v -> TimePicker.showTimePicker(this, txtBuka));
         txtTutup.setOnClickListener(v -> TimePicker.showTimePicker(this, txtTutup));
         btnDaftar.setOnClickListener(v -> formValidasi());
@@ -111,7 +108,7 @@ public class DaftarMerchantActivity extends AppCompatActivity {
         if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
             gambarUri = data.getData();
             String fileName = getFileName(gambarUri);
-            pilihFile.setText(fileName);
+            txtGambar.setText(fileName);
         }
     }
 
