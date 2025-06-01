@@ -16,7 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/headerLayout"
         android:layout_width="0dp"
-        android:layout_height="210dp"
+        android:layout_height="200dp"
         android:background="@drawable/bottom_rounded_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,7 +115,7 @@
                         android:inputType="textPassword"
                         android:padding="0dp"
                         android:textColor="@color/green"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"/>
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

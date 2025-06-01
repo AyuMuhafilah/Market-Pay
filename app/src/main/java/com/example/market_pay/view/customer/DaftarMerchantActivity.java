@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
-import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -112,36 +111,6 @@ public class DaftarMerchantActivity extends AppCompatActivity {
         }
     }
 
-    private void tampilData(){
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        UserUtils.getUserData(userId, new UserUtils.UserDataCallback() {
-            @Override
-            public void onUserData(UserModel user) {
-                if (user != null) {
-                    txtNik.setText(user.getNik());
-                    txtNama.setText(user.getNama_lengkap());
-                    txtNoHp.setText(user.getNo_hp());
-                    txtEmail.setText(user.getEmail());
-                    txtTmpLahir.setText(user.getTmp_lahir());
-                    txtTglLahir.setText(user.getTgl_lahir());
-                    String jk = user.getJk();
-                    if (jk != null) {
-                        if (jk.equalsIgnoreCase("Laki - laki")) {
-                            jkl.setChecked(true);
-                        } else if (jk.equalsIgnoreCase("Perempuan")) {
-                            jkp.setChecked(true);
-                        }
-                    }
-                    txtDesa.setText(user.getDesa());
-                    txtRtRw.setText(user.getRt());
-                    txtDetAlamat.setText(user.getDet_alamat());
-                } else {
-                    Toast.getInstance(DaftarMerchantActivity.this).showToast("User Tidak Ditemukan");
-                }
-            }
-        });
-    }
-
     private String getFileName(Uri uri) {
         String result = null;
         if ("content".equals(uri.getScheme())) {
@@ -192,6 +161,36 @@ public class DaftarMerchantActivity extends AppCompatActivity {
         simpanData(usaha, deskUsaha, buka, tutup);
     }
 
+    private void tampilData(){
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        UserUtils.getUserData(userId, new UserUtils.UserDataCallback() {
+            @Override
+            public void onUserData(UserModel user) {
+                if (user != null) {
+                    txtNik.setText(user.getNik());
+                    txtNama.setText(user.getNama_lengkap());
+                    txtNoHp.setText(user.getNo_hp());
+                    txtEmail.setText(user.getEmail());
+                    txtTmpLahir.setText(user.getTmp_lahir());
+                    txtTglLahir.setText(user.getTgl_lahir());
+                    String jk = user.getJk();
+                    if (jk != null) {
+                        if (jk.equalsIgnoreCase("Laki - laki")) {
+                            jkl.setChecked(true);
+                        } else if (jk.equalsIgnoreCase("Perempuan")) {
+                            jkp.setChecked(true);
+                        }
+                    }
+                    txtDesa.setText(user.getDesa());
+                    txtRtRw.setText(user.getRt());
+                    txtDetAlamat.setText(user.getDet_alamat());
+                } else {
+                    Toast.getInstance(DaftarMerchantActivity.this).showToast("User Tidak Ditemukan");
+                }
+            }
+        });
+    }
+
     private void simpanData(String usaha, String deskUsaha, String buka, String tutup) {
         loadingDialog.show();
         CloudinaryHelper.uploadImage(this, gambarUri, new CloudinaryHelper.OnUploadCompleteListener() {
@@ -229,15 +228,6 @@ public class DaftarMerchantActivity extends AppCompatActivity {
 
     private void updateDataUser(String userId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String nik = txtNik.getText().toString().trim();
-        String nama = txtNama.getText().toString().trim();
-        String noHp = txtNoHp.getText().toString().trim();
-        String email = txtEmail.getText().toString().trim();
-        String tmpLahir = txtTmpLahir.getText().toString().trim();
-        String tglLahir = txtTglLahir.getText().toString().trim();
-        String desa = txtDesa.getText().toString().trim();
-        String rt = txtRtRw.getText().toString().trim();
-        String detAlamat = txtDetAlamat.getText().toString().trim();
         String jk = "";
         if (jkl.isChecked()) {
             jk = "Laki - laki";
@@ -246,18 +236,18 @@ public class DaftarMerchantActivity extends AppCompatActivity {
         }
         // Update data user di Firestore
         db.collection("users").document(userId)
-                .update(
-                        "nik", nik,
-                        "nama_lengkap", nama,
-                        "no_hp", noHp,
-                        "email", email,
-                        "tmp_lahir", tmpLahir,
-                        "tgl_lahir", tglLahir,
-                        "jk", jk,
-                        "desa", desa,
-                        "Rt", rt,
-                        "det_alamat", detAlamat
-                );
+            .update(
+                "nik", txtNik.getText().toString().trim(),
+                "nama_lengkap", txtNama.getText().toString().trim(),
+                "no_hp", txtNoHp.getText().toString().trim(),
+                "email", txtEmail.getText().toString().trim(),
+                "tmp_lahir", txtTmpLahir.getText().toString().trim(),
+                "tgl_lahir", txtTglLahir.getText().toString().trim(),
+                "jk", jk,
+                "desa", txtDesa.getText().toString().trim(),
+                "rt", txtRtRw.getText().toString().trim(),
+                "det_alamat", txtDetAlamat.getText().toString().trim()
+            );
     }
 
 }

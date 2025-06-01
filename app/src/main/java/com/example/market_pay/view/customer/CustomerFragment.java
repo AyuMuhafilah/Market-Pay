@@ -30,14 +30,12 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerFragment extends Fragment {
-
-    private static final String TAG = "CustomerFragment";
-
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private List<MerchantModel> merchantList;
@@ -80,7 +78,6 @@ public class CustomerFragment extends Fragment {
                 }
             }
         });
-
         btnLogout.setOnClickListener(v -> {
             ConfirmDialog.show(requireContext(), "Yakin ingin logout?", (dialog, which) -> {
                 if (requireActivity() instanceof HomeActivity) {
@@ -88,9 +85,7 @@ public class CustomerFragment extends Fragment {
                 }
             });
         });
-
-        fetchMerchants();
-
+        tampilMerchants();
         return view;
     }
 
@@ -101,9 +96,10 @@ public class CustomerFragment extends Fragment {
         return Math.max(2, noOfColumns);
     }
 
-    private void fetchMerchants() {
+    private void tampilMerchants() {
         db.collection("merchants")
                 .whereEqualTo("status", true)
+                .orderBy("usaha", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     merchantList.clear();
@@ -146,5 +142,4 @@ public class CustomerFragment extends Fragment {
         }
         return hasil.toString();
     }
-
 }
