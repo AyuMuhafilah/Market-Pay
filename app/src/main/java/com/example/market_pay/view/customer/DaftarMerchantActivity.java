@@ -32,6 +32,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.UUID;
+
 public class DaftarMerchantActivity extends AppCompatActivity {
 
     private TextInputEditText txtNik, txtNama, txtNoHp, txtEmail, txtTmpLahir,
@@ -211,7 +213,8 @@ public class DaftarMerchantActivity extends AppCompatActivity {
 
     private void simpanDataMerchant(String userId, String usaha, String deskripsi,
                                        String buka, String tutup, String imageUrl) {
-        MerchantModel merchant = new MerchantModel(userId, usaha, deskripsi, buka, tutup, imageUrl, false);
+        String merchantId = UUID.randomUUID().toString();
+        MerchantModel merchant = new MerchantModel(merchantId, userId, usaha, deskripsi, buka, tutup, imageUrl, false);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("merchants").document(userId)
                 .set(merchant)

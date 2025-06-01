@@ -61,6 +61,4 @@ dependencies {
     implementation (libs.cardview)
     implementation (libs.glide)
     annotationProcessor (libs.glide.compiler)
-
-
 }

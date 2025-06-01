@@ -1,6 +1,7 @@
 package com.example.market_pay.model;
 
 public class MerchantModel {
+    private String merchant_id;
     private String userId;
     private String usaha;
     private String deskripsi;
@@ -12,8 +13,8 @@ public class MerchantModel {
     public MerchantModel() {
     }
 
-    // Konstruktor lengkap: parameter status disamakan ke Boolean
-    public MerchantModel(String userId, String usaha, String deskripsi, String buka, String tutup, String image, Boolean sts_merchant) {
+    public MerchantModel(String merchant_id, String userId, String usaha, String deskripsi, String buka, String tutup, String image, Boolean sts_merchant) {
+        this.merchant_id = merchant_id;
         this.userId = userId;
         this.usaha = usaha;
         this.deskripsi = deskripsi;
@@ -24,6 +25,14 @@ public class MerchantModel {
     }
 
     // Getter dan Setter
+    public String getMerchant_id() {
+        return merchant_id;
+    }
+
+    public void setMerchant_id(String merchant_id) {
+        this.merchant_id = merchant_id;
+    }
+
     public String getUserId() {
         return userId;
     }
