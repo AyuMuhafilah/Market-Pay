@@ -6,14 +6,14 @@ public class TransaksiModel {
     private String id;
     private String jenis;
     private Double nominal;
-    private Timestamp tgl;
+    private String tgl;
     private String user_id;
 
     public TransaksiModel() {
         // Diperlukan oleh Firestore
     }
 
-    public TransaksiModel(String id, String jenis, Double nominal, Timestamp tgl, String user_id) {
+    public TransaksiModel(String id, String jenis, Double nominal, String tgl, String user_id) {
         this.id = id;
         this.jenis = jenis;
         this.nominal = nominal;
@@ -31,8 +31,8 @@ public class TransaksiModel {
     public Double getNominal() { return nominal; }
     public void setNominal(Double nominal) { this.nominal = nominal; }
 
-    public Timestamp getTgl() { return tgl; }
-    public void setTgl(Timestamp tgl) { this.tgl = tgl; }
+    public String getTgl() { return tgl; }
+    public void setTgl(String tgl) { this.tgl = tgl; }
 
     public String getUser_id() { return user_id; }
     public void setUser_id(String user_id) { this.user_id = user_id; }

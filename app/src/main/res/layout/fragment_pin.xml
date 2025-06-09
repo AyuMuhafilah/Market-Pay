@@ -1,6 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_marginTop="24dp"
+    android:layout_marginBottom="24dp"
+    android:layout_gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_close"
+        android:layout_gravity="end"
+        android:padding="8dp"
+        android:contentDescription="Tutup"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Masukan PIN"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="38dp">
+        <EditText
+            android:id="@+id/pin1"
+            style="@style/PinBoxStyle"
+            android:inputType="number"
+            android:maxLength="1"
+            android:nextFocusDown="@+id/pin2"
+            android:importantForAccessibility="no"/>
+
+        <EditText
+            android:id="@+id/pin2"
+            style="@style/PinBoxStyle"
+            android:inputType="number"
+            android:maxLength="1"
+            android:nextFocusDown="@+id/pin3"
+            android:importantForAccessibility="no"/>
+
+        <EditText
+            android:id="@+id/pin3"
+            style="@style/PinBoxStyle"
+            android:inputType="number"
+            android:maxLength="1"
+            android:nextFocusDown="@+id/pin4"
+            android:importantForAccessibility="no"/>
+
+        <EditText
+            android:id="@+id/pin4"
+            style="@style/PinBoxStyle"
+            android:inputType="number"
+            android:maxLength="1"
+            android:nextFocusDown="@+id/pin5"
+            android:importantForAccessibility="no"/>
+    </LinearLayout>
+</LinearLayout>

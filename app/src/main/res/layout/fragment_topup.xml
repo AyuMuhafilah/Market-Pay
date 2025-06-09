@@ -23,12 +23,12 @@
         app:boxStrokeColor="@color/green"
         app:hintTextColor="@color/green">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/txtTopup"
+            android:id="@+id/jmlTopup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
             android:inputType="number"
-            android:maxLength="6"
+            android:maxLength="9"
             android:drawableStart="@drawable/ic_money"
             android:drawableTint="@color/green"
             android:textColor="@color/black" />
@@ -41,8 +41,8 @@
         android:paddingHorizontal="16dp"
         android:gravity="center"
         android:layout_marginTop="16dp">
-        <Button
-            android:id="@+id/btnCancel"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBatal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
