@@ -5,6 +5,10 @@
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
+        android:id="@+id/nav_topup"
+        android:icon="@drawable/ic_wallet"
+        android:title="Topup" />
+    <item
         android:id="@+id/nav_transaksi"
         android:icon="@drawable/ic_money"
         android:title="Transaksi" />

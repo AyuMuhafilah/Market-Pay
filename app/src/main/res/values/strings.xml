@@ -53,5 +53,7 @@
     <string name="daftarMerchant">Daftar Merchant</string>
     <string name="dataPribadi">Data Pribadi</string>
     <string name="detAlamat">Detail Lainnya (Nama Jalan/No Rumah)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

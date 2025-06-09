@@ -45,6 +45,10 @@ public class HomeActivity extends AppCompatActivity {
                 fragment = new ProfileFragment();
             } else if (itemId == R.id.nav_transaksi) {
                 fragment = new TransaksiFragment();
+            } else if (itemId == R.id.nav_topup) {
+                TopupFragment dialog = new TopupFragment();
+                dialog.show(getSupportFragmentManager(), "TopupDialog");
+                return true;
             } else {
                 fragment = null;
             }
