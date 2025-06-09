@@ -379,14 +379,15 @@
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDaftarMerchant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/green"
                 android:text="@string/daftar"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:rippleColor="@color/white"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

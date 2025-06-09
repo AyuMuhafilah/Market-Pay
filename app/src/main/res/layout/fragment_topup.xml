@@ -19,8 +19,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="Jumlah Topup"
+        android:hint="Masukan Jumlah Topup"
         app:boxStrokeColor="@color/green"
         app:hintTextColor="@color/green">
         <com.google.android.material.textfield.TextInputEditText
@@ -31,9 +30,9 @@
             android:inputType="number"
             android:maxLength="6"
             android:drawableStart="@drawable/ic_money"
+            android:drawableTint="@color/green"
             android:textColor="@color/black" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Batal"
-            android:backgroundTint="@color/green"
+            android:backgroundTint="@color/red"
             android:foreground="?attr/selectableItemBackground"/>
         <Space
             android:layout_width="16dp"
@@ -62,7 +61,6 @@
             android:textColor="@android:color/white"
             app:backgroundTint="@color/green"
             app:rippleColor="@color/white" />
-
     </LinearLayout>
 
 </LinearLayout>
