@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.market_pay.R;
 import com.example.market_pay.utils.LoadingDialog;
 import com.example.market_pay.utils.Toast;
@@ -216,4 +219,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void refreshFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.detach(currentFragment);
+            ft.attach(currentFragment);
+            ft.commit();
+        }
+    }
+
+    public void refreshActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
 }

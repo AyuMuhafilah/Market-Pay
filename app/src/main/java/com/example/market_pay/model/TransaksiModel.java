@@ -5,15 +5,15 @@ import com.google.firebase.Timestamp;
 public class TransaksiModel {
     private String id;
     private String jenis;
-    private Double nominal;
-    private String tgl;
+    private Integer nominal;
+    private Timestamp tgl;
     private String user_id;
 
     public TransaksiModel() {
         // Diperlukan oleh Firestore
     }
 
-    public TransaksiModel(String id, String jenis, Double nominal, String tgl, String user_id) {
+    public TransaksiModel(String id, String jenis, Integer nominal, Timestamp tgl, String user_id) {
         this.id = id;
         this.jenis = jenis;
         this.nominal = nominal;
@@ -28,11 +28,11 @@ public class TransaksiModel {
     public String getJenis() { return jenis; }
     public void setJenis(String jenis) { this.jenis = jenis; }
 
-    public Double getNominal() { return nominal; }
-    public void setNominal(Double nominal) { this.nominal = nominal; }
+    public Integer getNominal() { return nominal; }
+    public void setNominal(Integer nominal) { this.nominal = nominal; }
 
-    public String getTgl() { return tgl; }
-    public void setTgl(String tgl) { this.tgl = tgl; }
+    public Timestamp getTgl() { return tgl; }
+    public void setTgl(Timestamp tgl) { this.tgl = tgl; }
 
     public String getUser_id() { return user_id; }
     public void setUser_id(String user_id) { this.user_id = user_id; }
