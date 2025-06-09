@@ -95,7 +95,7 @@ public class SigninActivity extends AppCompatActivity {
         .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 String userId = mAuth.getCurrentUser().getUid();
-                UserModel userModel = new UserModel(userId, email, namaLengkap, noHp, "customer", "",0,"","","","","","","");
+                UserModel userModel = new UserModel(userId, email, namaLengkap, noHp, "customer", "",0,"","","","","","","","");
                 firestore.collection("users")
                 .document(userId)
                 .set(userModel)

@@ -17,11 +17,12 @@ public class UserModel {
     private String desa;
     private String Rt;
     private String det_alamat;
+    private String pin;
 
     public UserModel() {}
 
     public UserModel(String user_id, String email, String nama_lengkap, String no_hp, String role, String profile, Integer saldo,
-                     String nik, String tmp_lahir, String tgl_lahir, String jk, String desa, String Rt, String det_alamat) {
+                     String nik, String tmp_lahir, String tgl_lahir, String jk, String desa, String Rt, String det_alamat, String pin) {
         this.user_id = user_id;
         this.email = email;
         this.nama_lengkap = nama_lengkap;
@@ -36,6 +37,7 @@ public class UserModel {
         this.desa = desa;
         this.Rt = Rt;
         this.det_alamat = det_alamat;
+        this.pin = pin;
     }
 
     // getter dan setter
@@ -81,4 +83,7 @@ public class UserModel {
 
     public String getDet_alamat() { return det_alamat; }
     public void setDet_alamat(String det_alamat) { this.det_alamat = det_alamat; }
+
+    public String getPin() { return pin; }
+    public void setPin(String pin) { this.pin = pin; }
 }
