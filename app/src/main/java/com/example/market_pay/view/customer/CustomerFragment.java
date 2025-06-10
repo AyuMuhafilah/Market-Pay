@@ -3,6 +3,7 @@ package com.example.market_pay.view.customer;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.example.market_pay.utils.Toast;
 import com.example.market_pay.utils.UserUtils;
 import com.example.market_pay.view.HomeActivity;
 import com.example.market_pay.model.MerchantModel;
+import com.example.market_pay.view.TopupFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -39,6 +41,7 @@ public class CustomerFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private List<MerchantModel> merchantList;
+    private TextView topup, transfer;
 
     public CustomerFragment() {
         // Required empty public constructor
@@ -86,6 +89,13 @@ public class CustomerFragment extends Fragment {
             });
         });
         tampilMerchants();
+
+        // Topup
+        TopupFragment dialog = new TopupFragment();
+        topup = view.findViewById(R.id.topup);
+        topup.setOnClickListener(v -> {
+            dialog.show(requireActivity().getSupportFragmentManager(), "TopupDialog");
+        });
         return view;
     }
 
@@ -97,8 +107,11 @@ public class CustomerFragment extends Fragment {
     }
 
     private void tampilMerchants() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         db.collection("merchants")
                 .whereEqualTo("status", true)
+                .whereNotEqualTo("userId", userId)
+                .orderBy("userId")
                 .orderBy("usaha", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

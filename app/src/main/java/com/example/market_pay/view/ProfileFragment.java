@@ -49,7 +49,8 @@ public class ProfileFragment extends Fragment {
                     pinFragment.show(getParentFragmentManager(), "PinFragment");
                 });
                 ubahKataSandi.setOnClickListener(v2 -> {
-                    Toast.getInstance(requireContext()).showToast("Ubah Kata Sandi");
+                    UbahSandiFragment dialog = new UbahSandiFragment();
+                    dialog.show(getParentFragmentManager(), "UbahSandiFragment");
                 });
             } else {
                 submenuPengaturan.setVisibility(View.GONE);

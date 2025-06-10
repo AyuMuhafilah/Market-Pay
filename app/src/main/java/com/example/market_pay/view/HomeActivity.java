@@ -2,12 +2,15 @@ package com.example.market_pay.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.market_pay.R;
+import com.example.market_pay.helper.UserHelper;
+import com.example.market_pay.model.UserModel;
 import com.example.market_pay.view.customer.CustomerFragment;
 import com.example.market_pay.view.customer.TransaksiFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,6 +39,29 @@ public class HomeActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragmentContainer, fragmentAwal)
                 .commit();
+
+        // Akses Menu Bottom sesuai role
+        UserHelper.getCurrentUser(new UserHelper.UserCallback() {
+            @Override
+            public void onUserLoaded(UserModel user) {
+                String role = user.getRole();
+                Log.d("ROLE", "User role: " + role);
+                if ("admin".equals(role)) {
+                    bottomNav.getMenu().findItem(R.id.nav_merchant).setVisible(false);
+                } else if ("merchant".equals(role)) {
+                    bottomNav.getMenu().findItem(R.id.nav_admin).setVisible(false);
+                } else {
+                    bottomNav.getMenu().findItem(R.id.nav_admin).setVisible(false);
+                    bottomNav.getMenu().findItem(R.id.nav_merchant).setVisible(false);
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("USER", "Error ambil user", e);
+            }
+        });
+
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment;
             int itemId = item.getItemId();
@@ -45,10 +71,6 @@ public class HomeActivity extends AppCompatActivity {
                 fragment = new ProfileFragment();
             } else if (itemId == R.id.nav_transaksi) {
                 fragment = new TransaksiFragment();
-            } else if (itemId == R.id.nav_topup) {
-                TopupFragment dialog = new TopupFragment();
-                dialog.show(getSupportFragmentManager(), "TopupDialog");
-                return true;
             } else {
                 fragment = null;
             }
