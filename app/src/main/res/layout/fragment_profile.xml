@@ -188,7 +188,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Ubah Kata Sandi Akun"
+                    android:text="Ubah Password Akun"
                     android:gravity="center_vertical"
                     android:drawablePadding="10dp"
                     android:drawableStart="@drawable/ic_password"
