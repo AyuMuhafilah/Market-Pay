@@ -8,10 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.market_pay.R;
-import com.example.market_pay.model.UserModel;
 import com.example.market_pay.helper.UserHelper;
+import com.example.market_pay.view.admin.AdminFragment;
 import com.example.market_pay.view.customer.CustomerFragment;
 import com.example.market_pay.view.customer.TransaksiFragment;
+import com.example.market_pay.view.merchant.MerchantFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -64,7 +65,11 @@ public class HomeActivity extends AppCompatActivity {
                 fragment = new ProfileFragment();
             } else if (itemId == R.id.nav_transaksi) {
                 fragment = new TransaksiFragment();
-            } else {
+            }else if (itemId == R.id.nav_admin) {
+                fragment = new AdminFragment();
+            }else if (itemId == R.id.nav_merchant) {
+                fragment = new MerchantFragment();
+            }else {
                 fragment = null;
             }
             if (fragment != null) {

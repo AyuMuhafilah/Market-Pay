@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ProfileFragment extends Fragment {
     private LinearLayout dataPribadi, daftarMerchant, pengaturan, logout, submenuPengaturan, ubahPin, ubahKataSandi;
     private TextView namaUser;
+    private ImageView arrow;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +37,19 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         // Aktifkan Dropdown Pengaturan
+        arrow = view.findViewById(R.id.arrow);
         pengaturan = view.findViewById(R.id.pengaturan);
         ubahPin = view.findViewById(R.id.ubahPin);
         ubahKataSandi = view.findViewById(R.id.ubahKataSandi);
         submenuPengaturan = view.findViewById(R.id.submenuPengaturan);
+        namaUser = view.findViewById(R.id.namaUser);
+        daftarMerchant = view.findViewById(R.id.daftarMerchant);
+        dataPribadi = view.findViewById(R.id.dataPribadi);
 
         pengaturan.setOnClickListener(v -> {
             if (submenuPengaturan.getVisibility() == View.GONE) {
                 submenuPengaturan.setVisibility(View.VISIBLE);
+                arrow.setRotation(90f);
                 ubahPin.setOnClickListener(v2 -> {
                     PinFragment pinFragment = PinFragment.newInstance("ubah", () -> {
                     });
@@ -53,12 +60,10 @@ public class ProfileFragment extends Fragment {
                     dialog.show(getParentFragmentManager(), "UbahSandiFragment");
                 });
             } else {
+                arrow.setRotation(0);
                 submenuPengaturan.setVisibility(View.GONE);
             }
         });
-
-        namaUser = view.findViewById(R.id.namaUser);
-        daftarMerchant = view.findViewById(R.id.daftarMerchant);
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         UserHelper.getUserById(userId, user -> {
@@ -72,12 +77,15 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Daftar Merchant
-        daftarMerchant.setOnClickListener(v->{
-            Intent intent = new Intent(requireContext(), DaftarMerchantActivity.class);
-            startActivity(intent);
+        // Data Pribadi
+        dataPribadi.setOnClickListener(v->{
+            startActivity(new Intent(requireContext(), DataPribadiActivity.class));
         });
 
+        // Daftar Merchant
+        daftarMerchant.setOnClickListener(v->{
+            startActivity(new Intent(requireContext(), DaftarMerchantActivity.class));
+        });
 
         // Logout
         logout = view.findViewById(R.id.logout);
