@@ -2,15 +2,14 @@ package com.example.market_pay.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.market_pay.R;
-import com.example.market_pay.helper.UserHelper;
 import com.example.market_pay.model.UserModel;
+import com.example.market_pay.helper.UserHelper;
 import com.example.market_pay.view.customer.CustomerFragment;
 import com.example.market_pay.view.customer.TransaksiFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -41,11 +40,10 @@ public class HomeActivity extends AppCompatActivity {
                 .commit();
 
         // Akses Menu Bottom sesuai role
-        UserHelper.getCurrentUser(new UserHelper.UserCallback() {
-            @Override
-            public void onUserLoaded(UserModel user) {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        UserHelper.getUserById(userId, user -> {
+            if (user != null) {
                 String role = user.getRole();
-                Log.d("ROLE", "User role: " + role);
                 if ("admin".equals(role)) {
                     bottomNav.getMenu().findItem(R.id.nav_merchant).setVisible(false);
                 } else if ("merchant".equals(role)) {
@@ -54,11 +52,6 @@ public class HomeActivity extends AppCompatActivity {
                     bottomNav.getMenu().findItem(R.id.nav_admin).setVisible(false);
                     bottomNav.getMenu().findItem(R.id.nav_merchant).setVisible(false);
                 }
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Log.e("USER", "Error ambil user", e);
             }
         });
 

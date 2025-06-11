@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,7 @@ import android.widget.TextView;
 import com.example.market_pay.R;
 import com.example.market_pay.model.UserModel;
 import com.example.market_pay.utils.ConfirmDialog;
-import com.example.market_pay.utils.Toast;
-import com.example.market_pay.utils.UserUtils;
+import com.example.market_pay.helper.UserHelper;
 import com.example.market_pay.view.customer.DaftarMerchantActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -57,21 +57,27 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Daftar Merchant
+        namaUser = view.findViewById(R.id.namaUser);
         daftarMerchant = view.findViewById(R.id.daftarMerchant);
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        UserHelper.getUserById(userId, user -> {
+            if (user != null) {
+                String role = user.getRole();
+                if (role.equals("merchant")){
+                    // Hilangkan Daftar Merchant
+                    daftarMerchant.setVisibility(view.GONE);
+                }
+                namaUser.setText(formatNama(user.getNama_lengkap()));
+            }
+        });
+
+        // Daftar Merchant
         daftarMerchant.setOnClickListener(v->{
             Intent intent = new Intent(requireContext(), DaftarMerchantActivity.class);
             startActivity(intent);
         });
 
-        namaUser = view.findViewById(R.id.namaUser);
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        UserUtils.getUserData(userId, new UserUtils.UserDataCallback() {
-            @Override
-            public void onUserData(UserModel user) {
-                namaUser.setText(formatNama(user.getNama_lengkap()));
-            }
-        });
 
         // Logout
         logout = view.findViewById(R.id.logout);

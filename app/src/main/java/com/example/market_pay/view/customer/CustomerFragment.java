@@ -3,7 +3,6 @@ package com.example.market_pay.view.customer;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.ConfirmDialog;
 import com.example.market_pay.utils.GridUtils;
 import com.example.market_pay.utils.Toast;
-import com.example.market_pay.utils.UserUtils;
+import com.example.market_pay.helper.UserHelper;
 import com.example.market_pay.view.HomeActivity;
 import com.example.market_pay.model.MerchantModel;
 import com.example.market_pay.view.TopupFragment;
@@ -69,18 +68,16 @@ public class CustomerFragment extends Fragment {
         recyclerView.addItemDecoration(new GridUtils(numberOfColumns, spacingInPixels, true));
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        UserUtils.getUserData(userId, new UserUtils.UserDataCallback() {
-            @Override
-            public void onUserData(UserModel user) {
-                if (user != null) {
-                    namaUser.setText(formatNama(user.getNama_lengkap()));
-                    int saldo = user.getSaldo();
-                    jmlSaldo.setText(AppUtils.formatRupiah(saldo));
-                } else {
-                    Toast.getInstance(getContext()).showToast("User Tidak Ditemukan");
-                }
+        UserHelper.getUserById(userId, user -> {
+            if (user != null) {
+                namaUser.setText(formatNama(user.getNama_lengkap()));
+                int saldo = user.getSaldo();
+                jmlSaldo.setText(AppUtils.formatRupiah(saldo));
+            } else {
+                Toast.getInstance(getContext()).showToast("User Tidak Ditemukan");
             }
         });
+
         btnLogout.setOnClickListener(v -> {
             ConfirmDialog.show(requireContext(), "Yakin ingin logout?", (dialog, which) -> {
                 if (requireActivity() instanceof HomeActivity) {

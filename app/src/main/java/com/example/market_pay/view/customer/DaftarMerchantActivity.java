@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.market_pay.R;
 import com.example.market_pay.helper.CloudinaryHelper;
+import com.example.market_pay.helper.MerchantHelper;
 import com.example.market_pay.helper.WilayahHelper;
 import com.example.market_pay.model.MerchantModel;
 import com.example.market_pay.model.UserModel;
@@ -27,7 +28,7 @@ import com.example.market_pay.utils.DatePicker;
 import com.example.market_pay.utils.LoadingDialog;
 import com.example.market_pay.utils.TimePicker;
 import com.example.market_pay.utils.Toast;
-import com.example.market_pay.utils.UserUtils;
+import com.example.market_pay.helper.UserHelper;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -165,30 +166,35 @@ public class DaftarMerchantActivity extends AppCompatActivity {
 
     private void tampilData(){
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        UserUtils.getUserData(userId, new UserUtils.UserDataCallback() {
-            @Override
-            public void onUserData(UserModel user) {
-                if (user != null) {
-                    txtNik.setText(user.getNik());
-                    txtNama.setText(user.getNama_lengkap());
-                    txtNoHp.setText(user.getNo_hp());
-                    txtEmail.setText(user.getEmail());
-                    txtTmpLahir.setText(user.getTmp_lahir());
-                    txtTglLahir.setText(user.getTgl_lahir());
-                    String jk = user.getJk();
-                    if (jk != null) {
-                        if (jk.equalsIgnoreCase("Laki - laki")) {
-                            jkl.setChecked(true);
-                        } else if (jk.equalsIgnoreCase("Perempuan")) {
-                            jkp.setChecked(true);
-                        }
+        UserHelper.getUserById(userId, user -> {
+            if (user != null) {
+                txtNik.setText(user.getNik());
+                txtNama.setText(user.getNama_lengkap());
+                txtNoHp.setText(user.getNo_hp());
+                txtEmail.setText(user.getEmail());
+                txtTmpLahir.setText(user.getTmp_lahir());
+                txtTglLahir.setText(user.getTgl_lahir());
+                String jk = user.getJk();
+                if (jk != null) {
+                    if (jk.equalsIgnoreCase("Laki - laki")) {
+                        jkl.setChecked(true);
+                    } else if (jk.equalsIgnoreCase("Perempuan")) {
+                        jkp.setChecked(true);
                     }
-                    txtDesa.setText(user.getDesa());
-                    txtRtRw.setText(user.getRt());
-                    txtDetAlamat.setText(user.getDet_alamat());
-                } else {
-                    Toast.getInstance(DaftarMerchantActivity.this).showToast("User Tidak Ditemukan");
                 }
+                txtDesa.setText(user.getDesa());
+                txtRtRw.setText(user.getRt());
+                txtDetAlamat.setText(user.getDet_alamat());
+            } else {
+                Toast.getInstance(DaftarMerchantActivity.this).showToast("User Tidak Ditemukan");
+            }
+        });
+        MerchantHelper.getMerchantByUserId(userId, merchant -> {
+            if (merchant != null) {
+                txtUsaha.setText(merchant.getUsaha());
+                txtDeskUsaha.setText(merchant.getDeskripsi());
+                txtBuka.setText(merchant.getBuka());
+                txtTutup.setText(merchant.getTutup());
             }
         });
     }

@@ -9,10 +9,6 @@
         android:icon="@drawable/ic_money"
         android:title="Transaksi" />
     <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_user"
-        android:title="Profile" />
-    <item
         android:id="@+id/nav_admin"
         android:icon="@drawable/ic_list"
         android:title="Admin" />
@@ -20,4 +16,8 @@
         android:id="@+id/nav_merchant"
         android:icon="@drawable/ic_store"
         android:title="Merchant" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_user"
+        android:title="Profile" />
 </menu>
