@@ -16,9 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.market_pay.R;
 import com.example.market_pay.adapter.MerchantAdapter;
-import com.example.market_pay.model.UserModel;
 import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.ConfirmDialog;
 import com.example.market_pay.utils.GridUtils;
@@ -27,6 +27,7 @@ import com.example.market_pay.helper.UserHelper;
 import com.example.market_pay.view.HomeActivity;
 import com.example.market_pay.model.MerchantModel;
 import com.example.market_pay.view.TopupFragment;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -41,6 +42,7 @@ public class CustomerFragment extends Fragment {
     private FirebaseFirestore db;
     private List<MerchantModel> merchantList;
     private TextView topup, transfer;
+    private ShapeableImageView profile;
 
     public CustomerFragment() {
         // Required empty public constructor
@@ -56,6 +58,7 @@ public class CustomerFragment extends Fragment {
         TextView namaUser = view.findViewById(R.id.textUser);
         TextInputEditText jmlSaldo = view.findViewById(R.id.txtSaldo);
         ImageView btnLogout = view.findViewById(R.id.btnLogout);
+        profile = view.findViewById(R.id.profileImage);
 
         db = FirebaseFirestore.getInstance();
         merchantList = new ArrayList<>();
@@ -69,12 +72,22 @@ public class CustomerFragment extends Fragment {
 
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         UserHelper.getUserById(userId, user -> {
-            if (user != null) {
+            if (user != null && isAdded()) {
                 namaUser.setText(formatNama(user.getNama_lengkap()));
                 int saldo = user.getSaldo();
                 jmlSaldo.setText(AppUtils.formatRupiah(saldo));
-            } else {
-                Toast.getInstance(getContext()).showToast("User Tidak Ditemukan");
+                String imageUrl = user.getProfile();
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(requireContext())
+                            .load(imageUrl)
+                            .placeholder(R.drawable.user)
+                            .error(R.drawable.user)
+                            .into(profile);
+                } else {
+                    Glide.with(requireContext())
+                            .load(R.drawable.user)
+                            .into(profile);
+                }
             }
         });
 

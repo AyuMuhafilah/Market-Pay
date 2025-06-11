@@ -40,7 +40,6 @@
                     android:layout_height="70dp"
                     android:contentDescription="@string/profile"
                     android:padding="10dp"
-                    android:src="@drawable/user"
                     app:shapeAppearanceOverlay="@style/roundedImageView"
                     app:strokeColor="@android:color/white"
                     app:strokeWidth="3dp" />

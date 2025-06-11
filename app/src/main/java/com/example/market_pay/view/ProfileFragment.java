@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +14,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.market_pay.R;
-import com.example.market_pay.model.UserModel;
 import com.example.market_pay.utils.ConfirmDialog;
 import com.example.market_pay.helper.UserHelper;
 import com.example.market_pay.view.customer.DaftarMerchantActivity;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ProfileFragment extends Fragment {
     private LinearLayout dataPribadi, daftarMerchant, pengaturan, logout, submenuPengaturan, ubahPin, ubahKataSandi;
     private TextView namaUser;
     private ImageView arrow;
+    private ShapeableImageView profile;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,7 @@ public class ProfileFragment extends Fragment {
         // Aktifkan Dropdown Pengaturan
         arrow = view.findViewById(R.id.arrow);
         pengaturan = view.findViewById(R.id.pengaturan);
+        profile = view.findViewById(R.id.profileImage);
         ubahPin = view.findViewById(R.id.ubahPin);
         ubahKataSandi = view.findViewById(R.id.ubahKataSandi);
         submenuPengaturan = view.findViewById(R.id.submenuPengaturan);
@@ -69,13 +72,25 @@ public class ProfileFragment extends Fragment {
         UserHelper.getUserById(userId, user -> {
             if (user != null) {
                 String role = user.getRole();
-                if (role.equals("merchant")){
-                    // Hilangkan Daftar Merchant
-                    daftarMerchant.setVisibility(view.GONE);
+                if (role.equals("merchant")) {
+                    daftarMerchant.setVisibility(View.GONE);
                 }
                 namaUser.setText(formatNama(user.getNama_lengkap()));
+                String imageUrl = user.getProfile();
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(imageUrl)
+                            .placeholder(R.drawable.user)
+                            .error(R.drawable.user)
+                            .into(profile);
+                } else {
+                Glide.with(this)
+                    .load(R.drawable.user)
+                    .into(profile);
+                }
             }
         });
+
 
         // Data Pribadi
         dataPribadi.setOnClickListener(v->{
