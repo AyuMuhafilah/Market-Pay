@@ -57,6 +57,54 @@ public class UserHelper {
         void onUserListResult(List<UserModel> userList);
     }
 
+    // Ambil user merchant yang ID-nya ada di merchant status=false
+    public static void getMerchant(UserListCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Ambil semua merchant dengan status == false
+        db.collection("merchants")
+        .whereEqualTo("status", false)
+        .get()
+        .addOnSuccessListener(querySnapshot -> {
+            List<String> userIds = new ArrayList<>();
+            for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                String userId = doc.getString("userId");
+                Object statusObj = doc.get("status");
+                if (statusObj instanceof Boolean && !(Boolean) statusObj) {
+                    if (userId != null) userIds.add(userId);
+                }
+            }
+            if (!userIds.isEmpty()) {
+                // Ambil maksimal 10 dulu (karena Firestore limit)
+                List<String> limitedUserIds = userIds.subList(0, Math.min(25, userIds.size()));
+                // Step 2: Query ke users
+                db.collection("users")
+                .whereEqualTo("role", "merchant")
+                .whereIn("user_id", limitedUserIds)
+                .get()
+                .addOnSuccessListener(userSnapshot -> {
+                    List<UserModel> userList = new ArrayList<>();
+                    for (DocumentSnapshot userDoc : userSnapshot.getDocuments()) {
+                        UserModel user = userDoc.toObject(UserModel.class);
+                        if (user != null) userList.add(user);
+                    }
+                    callback.onUserListResult(userList);
+                })
+                .addOnFailureListener(e -> {
+                    callback.onUserListResult(null);
+                });
+            } else {
+                // Tidak ada pedagang dengan status merchant false
+                callback.onUserListResult(new ArrayList<>()); // Biar tetap aman null-safe
+            }
+        })
+        .addOnFailureListener(e -> {
+            // Gagal ambil merchant
+            callback.onUserListResult(null);
+        });
+    }
+
+
     // CARA PEMANGGILAN
 //    UserHelper.getUserById("userId123", user -> {
 //        if (user != null) {

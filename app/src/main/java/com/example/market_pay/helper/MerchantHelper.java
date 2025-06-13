@@ -36,18 +36,18 @@ public class MerchantHelper {
     // Ambil list merchant dengan query fleksibel
     public static void queryMerchants(Query query, MerchantListCallback callback) {
         query.get()
-                .addOnSuccessListener(querySnapshot -> {
-                    List<MerchantModel> merchantList = new ArrayList<>();
-                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                        MerchantModel merchant = doc.toObject(MerchantModel.class);
-                        if (merchant != null) merchantList.add(merchant);
-                    }
-                    callback.onMerchantListResult(merchantList);
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("MerchantHelper", "Gagal ambil list merchant: " + e.getMessage());
-                    callback.onMerchantListResult(null);
-                });
+        .addOnSuccessListener(querySnapshot -> {
+            List<MerchantModel> merchantList = new ArrayList<>();
+            for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                MerchantModel merchant = doc.toObject(MerchantModel.class);
+                if (merchant != null) merchantList.add(merchant);
+            }
+            callback.onMerchantListResult(merchantList);
+        })
+        .addOnFailureListener(e -> {
+            Log.e("MerchantHelper", "Gagal ambil list merchant: " + e.getMessage());
+            callback.onMerchantListResult(null);
+        });
     }
 
     // Callback untuk 1 merchant

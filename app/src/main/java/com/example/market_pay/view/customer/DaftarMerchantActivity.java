@@ -22,7 +22,6 @@ import com.example.market_pay.helper.CloudinaryHelper;
 import com.example.market_pay.helper.MerchantHelper;
 import com.example.market_pay.helper.WilayahHelper;
 import com.example.market_pay.model.MerchantModel;
-import com.example.market_pay.model.UserModel;
 import com.example.market_pay.utils.AppUtils;
 import com.example.market_pay.utils.DatePicker;
 import com.example.market_pay.utils.LoadingDialog;
