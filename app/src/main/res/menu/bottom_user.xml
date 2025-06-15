@@ -5,17 +5,13 @@
         android:icon="@drawable/ic_home"
         android:title="Home" />
     <item
+        android:id="@+id/nav_topup"
+        android:icon="@drawable/ic_topup"
+        android:title="Topup" />
+    <item
         android:id="@+id/nav_transaksi"
         android:icon="@drawable/ic_money"
         android:title="Transaksi" />
-    <item
-        android:id="@+id/nav_admin"
-        android:icon="@drawable/ic_list"
-        android:title="Admin" />
-    <item
-        android:id="@+id/nav_merchant"
-        android:icon="@drawable/ic_store"
-        android:title="Merchant" />
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_user"

@@ -99,13 +99,6 @@ public class CustomerFragment extends Fragment {
             });
         });
         tampilMerchants();
-
-        // Topup
-        TopupFragment dialog = new TopupFragment();
-        topup = view.findViewById(R.id.topup);
-        topup.setOnClickListener(v -> {
-            dialog.show(requireActivity().getSupportFragmentManager(), "TopupDialog");
-        });
         return view;
     }
 

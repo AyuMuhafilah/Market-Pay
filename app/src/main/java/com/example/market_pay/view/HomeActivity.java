@@ -42,16 +42,16 @@ public class HomeActivity extends AppCompatActivity {
 
         // Akses Menu Bottom sesuai role
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        bottomNav.getMenu().clear();
         UserHelper.getUserById(userId, user -> {
             if (user != null) {
                 String role = user.getRole();
                 if ("admin".equals(role)) {
-                    bottomNav.getMenu().findItem(R.id.nav_merchant).setVisible(false);
+                    bottomNav.inflateMenu(R.menu.bottom_admin);
                 } else if ("merchant".equals(role)) {
-                    bottomNav.getMenu().findItem(R.id.nav_admin).setVisible(false);
+                    bottomNav.inflateMenu(R.menu.bottom_merchant);
                 } else {
-                    bottomNav.getMenu().findItem(R.id.nav_admin).setVisible(false);
-                    bottomNav.getMenu().findItem(R.id.nav_merchant).setVisible(false);
+                    bottomNav.inflateMenu(R.menu.bottom_user);
                 }
             }
         });
@@ -70,7 +70,9 @@ public class HomeActivity extends AppCompatActivity {
             }else if (itemId == R.id.nav_merchant) {
                 fragment = new MerchantFragment();
             }else {
-                fragment = null;
+                TopupFragment dialog = new TopupFragment();
+                dialog.show(getSupportFragmentManager(), "TopupDialog");
+                return true; // jangan lanjut ke replaceFragment()
             }
             if (fragment != null) {
                 getSupportFragmentManager()
