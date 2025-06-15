@@ -45,7 +45,7 @@ public class PemasukanFragment extends Fragment {
         // Ambil data dari Firestore dengan filter
         CollectionReference pemasukanRef = db.collection("transaksi");
         pemasukanRef.whereEqualTo("user_id", userIdLogin)
-                .whereIn("jenis", Arrays.asList("Send Money", "Payment"))
+                .whereNotIn("jenis", Arrays.asList("Send Money", "Payment"))
                 .orderBy("jenis")
                 .orderBy("tgl", Query.Direction.DESCENDING)
                 .get()
