@@ -132,20 +132,11 @@ public class CustomerFragment extends Fragment {
                             merchantList.add(merchant);
                         }
                     }
-                    List<String> foodList = new ArrayList<>();
-                    List<String> imageList = new ArrayList<>();
-                    for (MerchantModel m : merchantList) {
-                        foodList.add(m.getUsaha() != null ? m.getUsaha() : "Data Merchant Tidak Ada");
-                        imageList.add((m.getImage() != null && !m.getImage().isEmpty()) ? m.getImage() : "");
-                    }
+
                     if (isAdded() && getContext() != null) {
-                        MerchantAdapter adapter = new MerchantAdapter(getContext(), foodList, imageList);
+                        MerchantAdapter adapter = new MerchantAdapter(getContext(), merchantList);
                         recyclerView.setAdapter(adapter);
-                        if (merchantList.isEmpty()) {
-                            recyclerView.setVisibility(View.GONE);
-                        } else {
-                            recyclerView.setVisibility(View.VISIBLE);
-                        }
+                        recyclerView.setVisibility(merchantList.isEmpty() ? View.GONE : View.VISIBLE);
                     }
                 })
                 .addOnFailureListener(e -> {

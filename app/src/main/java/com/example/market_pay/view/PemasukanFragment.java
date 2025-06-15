@@ -40,14 +40,12 @@ public class PemasukanFragment extends Fragment {
         // Inisialisasi Firestore
         db = FirebaseFirestore.getInstance();
         String userIdLogin = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        // Ambil container layout
         containerCards = view.findViewById(R.id.containerCards);
-
         // Ambil data dari Firestore dengan filter
         CollectionReference pemasukanRef = db.collection("transaksi");
         pemasukanRef.whereEqualTo("user_id", userIdLogin)
-                .whereEqualTo("jenis", "TopUp")
+                .whereNotEqualTo("jenis", "Payment")
+                .orderBy("jenis")
                 .orderBy("tgl", Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
