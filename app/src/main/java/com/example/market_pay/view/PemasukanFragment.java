@@ -21,6 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -44,7 +45,7 @@ public class PemasukanFragment extends Fragment {
         // Ambil data dari Firestore dengan filter
         CollectionReference pemasukanRef = db.collection("transaksi");
         pemasukanRef.whereEqualTo("user_id", userIdLogin)
-                .whereNotEqualTo("jenis", "Payment")
+                .whereIn("jenis", Arrays.asList("Send Money", "Payment"))
                 .orderBy("jenis")
                 .orderBy("tgl", Query.Direction.DESCENDING)
                 .get()
