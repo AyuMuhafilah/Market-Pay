@@ -70,9 +70,7 @@ public class HomeActivity extends AppCompatActivity {
             }else if (itemId == R.id.nav_merchant) {
                 fragment = new MerchantFragment();
             }else {
-                TopupFragment dialog = new TopupFragment();
-                dialog.show(getSupportFragmentManager(), "TopupDialog");
-                return true; // jangan lanjut ke replaceFragment()
+                fragment = null;
             }
             if (fragment != null) {
                 getSupportFragmentManager()
