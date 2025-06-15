@@ -79,7 +79,7 @@ public class UserHelper {
                 List<String> limitedUserIds = userIds.subList(0, Math.min(25, userIds.size()));
                 // Step 2: Query ke users
                 db.collection("users")
-                .whereEqualTo("role", "merchant")
+                .whereEqualTo("role", "customer")
                 .whereIn("user_id", limitedUserIds)
                 .get()
                 .addOnSuccessListener(userSnapshot -> {

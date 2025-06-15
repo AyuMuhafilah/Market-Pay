@@ -184,16 +184,17 @@ public class DaftarMerchantActivity extends AppCompatActivity {
                 txtDesa.setText(user.getDesa());
                 txtRtRw.setText(user.getRt());
                 txtDetAlamat.setText(user.getDet_alamat());
+
+                MerchantHelper.getMerchantByUserId(userId, merchant -> {
+                    if (merchant != null) {
+                        txtUsaha.setText(merchant.getUsaha());
+                        txtDeskUsaha.setText(merchant.getDeskripsi());
+                        txtBuka.setText(merchant.getBuka());
+                        txtTutup.setText(merchant.getTutup());
+                    }
+                });
             } else {
                 Toast.getInstance(DaftarMerchantActivity.this).showToast("User Tidak Ditemukan");
-            }
-        });
-        MerchantHelper.getMerchantByUserId(userId, merchant -> {
-            if (merchant != null) {
-                txtUsaha.setText(merchant.getUsaha());
-                txtDeskUsaha.setText(merchant.getDeskripsi());
-                txtBuka.setText(merchant.getBuka());
-                txtTutup.setText(merchant.getTutup());
             }
         });
     }

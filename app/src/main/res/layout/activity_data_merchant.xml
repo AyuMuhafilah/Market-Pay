@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/data_merchant"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.merchant.DataMerchantActivity">
+
+    <LinearLayout
+        android:id="@+id/header_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/green"
+        android:padding="15dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/iconBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/back"/>
+
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Data Merchant"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/header_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:hint="@string/nama_usaha"
+                app:boxStrokeColor="@color/green"
+                app:hintTextColor="@color/green">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtNamaUsaha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="10dp"
+                    android:inputType="text"
+                    android:drawableStart="@drawable/ic_food"
+                    android:textColor="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="@string/desk_usaha"
+                app:boxStrokeColor="@color/green"
+                app:hintTextColor="@color/green">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/deskUsaha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minLines="3"
+                    android:gravity="top|start"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:weightSum="2">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/timeInputLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:hint="@string/buka"
+                    app:boxStrokeColor="@color/green"
+                    app:hintTextColor="@color/green">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtBuka"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:drawableStart="@drawable/ic_time"
+                        android:drawablePadding="10dp"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/timeInputLayout1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/tutup"
+                    app:boxStrokeColor="@color/green"
+                    app:hintTextColor="@color/green">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtTutup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:inputType="none"
+                        android:drawableStart="@drawable/ic_time"
+                        android:drawablePadding="10dp"
+                        android:textColor="@color/black" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutFile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Pilih File"
+                app:boxStrokeColor="@color/green"
+                app:hintTextColor="@color/green">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pilihFile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_attach_file"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/black"
+                    android:textColor="@color/black"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <include
+                android:id="@+id/itemMerchantView"
+                layout="@layout/item_merchant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUpdateMerchant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/green"
+                android:text="Update"
+                android:textSize="18sp"
+                app:rippleColor="@color/white"/>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

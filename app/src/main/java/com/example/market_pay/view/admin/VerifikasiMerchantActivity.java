@@ -53,8 +53,7 @@ public class VerifikasiMerchantActivity extends AppCompatActivity {
     private void tampilData() {
         UserHelper.getMerchant(users -> {
             containerCards = findViewById(R.id.containerCards);
-            containerCards.removeAllViews(); // Tetap lakukan clear di awal
-
+            containerCards.removeAllViews();
             if (users != null && !users.isEmpty()) {
                 for (UserModel user : users) {
                     String userId = user.getUser_id();
@@ -71,16 +70,20 @@ public class VerifikasiMerchantActivity extends AppCompatActivity {
                     btnCheck.setOnClickListener(v -> {
                         ConfirmDialog.show(this, "Yakin ingin verifikasi merchant ini?", (dialog, which) -> {
                             FirebaseFirestore.getInstance()
-                                    .collection("merchants")
-                                    .document(userId)
-                                    .update("status", true)
-                                    .addOnSuccessListener(aVoid -> {
-                                        Toast.getInstance(this).showToast("Merchant Berhasil diverifikasi ");
-                                        runOnUiThread(this::tampilData);
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.getInstance(this).showToast("Gagal Verifikasi merchant");
-                                    });
+                                .collection("merchants")
+                                .document(userId)
+                                .update("status", true);
+                            FirebaseFirestore.getInstance()
+                                .collection("users")
+                                .document(userId)
+                                .update("role", "merchant")
+                                .addOnSuccessListener(aVoid -> {
+                                    Toast.getInstance(this).showToast("Merchant Berhasil diverifikasi ");
+                                    runOnUiThread(this::tampilData);
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.getInstance(this).showToast("Gagal Verifikasi merchant");
+                                });
                         });
                     });
 
@@ -102,10 +105,8 @@ public class VerifikasiMerchantActivity extends AppCompatActivity {
 
                     containerCards.addView(cardView);
                 }
-
                 containerCards.setVisibility(View.VISIBLE);
             } else {
-                // Tambahkan ini biar UI jelas kosong
                 TextView kosong = new TextView(this);
                 kosong.setText("\nTidak ada merchant yang perlu diverifikasi.");
                 kosong.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
