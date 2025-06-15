@@ -151,6 +151,7 @@
             android:textAlignment="center" />
 
         <TextView
+            android:id="@+id/tf"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

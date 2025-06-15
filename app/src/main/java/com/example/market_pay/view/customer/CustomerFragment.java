@@ -27,6 +27,7 @@ import com.example.market_pay.helper.UserHelper;
 import com.example.market_pay.view.HomeActivity;
 import com.example.market_pay.model.MerchantModel;
 import com.example.market_pay.view.TopupFragment;
+import com.example.market_pay.view.TransferFragment;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,7 +42,7 @@ public class CustomerFragment extends Fragment {
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private List<MerchantModel> merchantList;
-    private TextView topup, transfer;
+    private TextView topup, tf;
     private ShapeableImageView profile;
 
     public CustomerFragment() {
@@ -101,10 +102,17 @@ public class CustomerFragment extends Fragment {
         tampilMerchants();
 
         // Topup
-        TopupFragment dialog = new TopupFragment();
+        TopupFragment topupDialog = new TopupFragment();
         topup = view.findViewById(R.id.topup);
         topup.setOnClickListener(v -> {
-            dialog.show(requireActivity().getSupportFragmentManager(), "TopupDialog");
+            topupDialog.show(requireActivity().getSupportFragmentManager(), "TopupDialog");
+        });
+
+        // Transfer
+        TransferFragment tfDialog = new TransferFragment();
+        tf = view.findViewById(R.id.tf);
+        tf.setOnClickListener(v -> {
+            tfDialog.show(requireActivity().getSupportFragmentManager(), "TransferDialog");
         });
         return view;
     }
