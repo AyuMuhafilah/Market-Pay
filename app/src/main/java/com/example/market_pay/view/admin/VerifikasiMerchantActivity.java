@@ -107,7 +107,7 @@ public class VerifikasiMerchantActivity extends AppCompatActivity {
             } else {
                 // Tambahkan ini biar UI jelas kosong
                 TextView kosong = new TextView(this);
-                kosong.setText("Tidak ada merchant yang perlu diverifikasi.");
+                kosong.setText("\nTidak ada merchant yang perlu diverifikasi.");
                 kosong.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 containerCards.addView(kosong);
             }

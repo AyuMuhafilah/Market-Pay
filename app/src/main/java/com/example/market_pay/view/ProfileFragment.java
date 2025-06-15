@@ -72,8 +72,8 @@ public class ProfileFragment extends Fragment {
         UserHelper.getUserById(userId, user -> {
             if (user != null) {
                 String role = user.getRole();
-                if (role.equals("merchant")) {
-                    daftarMerchant.setVisibility(View.GONE);
+                if (role.equals("customer")) {
+                    daftarMerchant.setVisibility(View.VISIBLE);
                 }
                 namaUser.setText(formatNama(user.getNama_lengkap()));
                 String imageUrl = user.getProfile();

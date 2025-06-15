@@ -109,7 +109,9 @@
             android:paddingVertical="16dp"
             android:background="@drawable/item_background"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:visibility="gone">
+
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
