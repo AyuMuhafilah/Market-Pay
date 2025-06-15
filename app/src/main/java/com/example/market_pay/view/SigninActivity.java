@@ -91,52 +91,72 @@ public class SigninActivity extends AppCompatActivity {
             return;
         }
         loadingDialog.show();
-        mAuth.createUserWithEmailAndPassword(email, password)
-        .addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                String userId = mAuth.getCurrentUser().getUid();
-                UserModel userModel = new UserModel(userId, email, namaLengkap, noHp, "customer", "",0,"","","","","","","","");
-                firestore.collection("users")
-                .document(userId)
-                .set(userModel)
-                .addOnSuccessListener(unused -> {
-                    mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(loginTask -> {
-                                if (loginTask.isSuccessful()) {
-                                    FirebaseUser userLoggedIn = mAuth.getCurrentUser();
-                                    if (userLoggedIn != null) {
-                                        String userIdLoggedIn = userLoggedIn.getUid();
-                                        FirebaseFirestore.getInstance().collection("users")
-                                                .document(userIdLoggedIn)
-                                                .get()
-                                                .addOnSuccessListener(documentSnapshot -> {
-                                                    loadingDialog.dismiss();
-                                                    if (documentSnapshot.exists()) {
-                                                        String namaLengkapLoggedIn = documentSnapshot.getString("nama_lengkap");
-                                                        Toast.getInstance(SigninActivity.this).showToast("Selamat Datang " + namaLengkapLoggedIn);
-                                                        Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
-                                                        intent.putExtra("userId", userId);
-                                                        startActivity(intent);
-                                                        finish();
-                                                    }
-                                                });
-                                    }
+        FirebaseFirestore.getInstance().collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener(emailQuery -> {
+                if (!emailQuery.isEmpty()) {
+                    loadingDialog.dismiss();
+                    Toast.getInstance(this).showToast("Email sudah terdaftar");
+                    return;
+                }
+
+                FirebaseFirestore.getInstance().collection("users")
+                    .whereEqualTo("no_hp", noHp)
+                    .get()
+                    .addOnSuccessListener(noHpQuery -> {
+                        if (!noHpQuery.isEmpty()) {
+                            loadingDialog.dismiss();
+                            Toast.getInstance(this).showToast("Nomor HP sudah terdaftar");
+                            return;
+                        }
+
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    String userId = mAuth.getCurrentUser().getUid();
+                                    UserModel userModel = new UserModel(userId, email, namaLengkap, noHp, "customer", "", 0, "", "", "", "", "", "", "", "");
+                                    firestore.collection("users")
+                                            .document(userId)
+                                            .set(userModel)
+                                            .addOnSuccessListener(unused -> {
+                                                mAuth.signInWithEmailAndPassword(email, password)
+                                                        .addOnCompleteListener(loginTask -> {
+                                                            if (loginTask.isSuccessful()) {
+                                                                FirebaseUser userLoggedIn = mAuth.getCurrentUser();
+                                                                if (userLoggedIn != null) {
+                                                                    String userIdLoggedIn = userLoggedIn.getUid();
+                                                                    FirebaseFirestore.getInstance().collection("users")
+                                                                            .document(userIdLoggedIn)
+                                                                            .get()
+                                                                            .addOnSuccessListener(documentSnapshot -> {
+                                                                                loadingDialog.dismiss();
+                                                                                if (documentSnapshot.exists()) {
+                                                                                    String namaLengkapLoggedIn = documentSnapshot.getString("nama_lengkap");
+                                                                                    Toast.getInstance(SigninActivity.this).showToast("Selamat Datang " + namaLengkapLoggedIn);
+                                                                                    Intent intent = new Intent(SigninActivity.this, HomeActivity.class);
+                                                                                    intent.putExtra("userId", userId);
+                                                                                    startActivity(intent);
+                                                                                    finish();
+                                                                                }
+                                                                            });
+                                                                }
+                                                            } else {
+                                                                Toast.getInstance(SigninActivity.this).showToast("Login gagal setelah registrasi: " + loginTask.getException().getMessage());
+                                                                loadingDialog.dismiss();
+                                                            }
+                                                        });
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Toast.getInstance(this).showToast("Gagal menyimpan data user");
+                                                loadingDialog.dismiss();
+                                            });
                                 } else {
-                                    Toast.getInstance(SigninActivity.this).showToast("Login gagal setelah registrasi: " + loginTask.getException().getMessage());
+                                    Toast.getInstance(this).showToast("Gagal registrasi: " + task.getException().getMessage());
                                     loadingDialog.dismiss();
                                 }
                             });
-                })
-                .addOnFailureListener(e -> {
-                    Toast.getInstance(this).showToast("Gagal menyimpan data user");
-                    loadingDialog.dismiss();
-                });
-            } else {
-                Toast.getInstance(this).showToast("Gagal registrasi: " + task.getException().getMessage());
-                loadingDialog.dismiss();
-            }
-        });
+                        });
+            });
     }
-
-
 }
