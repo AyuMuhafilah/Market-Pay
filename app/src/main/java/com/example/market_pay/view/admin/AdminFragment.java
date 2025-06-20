@@ -13,7 +13,7 @@ import com.example.market_pay.R;
 
 public class AdminFragment extends Fragment {
 
-    private LinearLayout verifikasi;
+    private LinearLayout verifikasi, kelolaMerchant;
 
     public AdminFragment() {
         // Required empty public constructor
@@ -24,8 +24,12 @@ public class AdminFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_admin, container, false);
         verifikasi = view.findViewById(R.id.verifikasiMerchant);
+        kelolaMerchant = view.findViewById(R.id.kelolaMerchant);
         verifikasi.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), VerifikasiMerchantActivity.class));
+        });
+        kelolaMerchant.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), KelolaMerchantActivity.class));
         });
         return view;
     }

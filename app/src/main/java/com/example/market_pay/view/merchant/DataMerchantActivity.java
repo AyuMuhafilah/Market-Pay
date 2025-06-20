@@ -20,11 +20,13 @@ import com.bumptech.glide.Glide;
 import com.example.market_pay.R;
 import com.example.market_pay.helper.CloudinaryHelper;
 import com.example.market_pay.helper.MerchantHelper;
+import com.example.market_pay.helper.UserHelper;
 import com.example.market_pay.utils.LoadingDialog;
 import com.example.market_pay.utils.TimePicker;
 import com.example.market_pay.utils.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -95,70 +97,120 @@ public class DataMerchantActivity extends AppCompatActivity {
         }
     }
 
-    private void tampilData(){
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        MerchantHelper.getMerchantByUserId(userId, merchant -> {
-            if (merchant != null) {
-                txtUsaha.setText(merchant.getUsaha());
-                txtDeskUsaha.setText(merchant.getDeskripsi());
-                txtBuka.setText(merchant.getBuka());
-                txtTutup.setText(merchant.getTutup());
-                strGambar = merchant.getImage();
-                usaha.setText(merchant.getUsaha());
-                Glide.with(this)
-                        .load(strGambar)
-                        .placeholder(R.drawable.placeholder_image)
-                        .error(R.drawable.error_image)
-                        .into(gambar);
-            }else{
-                Log.d("CEK MERCHANT", "Data merchant NULL");
+    private void tampilData() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            Log.e("tampilData", "User belum login");
+            return;
+        }
+        String currentUserId = currentUser.getUid();
+        // Gunakan helper untuk ambil data user saat ini
+        UserHelper.getUserById(currentUserId, user -> {
+            if (user == null) {
+                Log.e("tampilData", "Data user tidak ditemukan");
+                return;
             }
+            String role = user.getRole();
+            String userIdToUse;
+            if ("admin".equalsIgnoreCase(role)) {
+                // Kalau admin, ambil userId dari intent
+                userIdToUse = getIntent().getStringExtra("user_id");
+                if (userIdToUse == null) {
+                    Log.e("tampilData", "Admin tapi user_id tidak dikirim melalui intent");
+                    return;
+                }
+            } else {
+                // Kalau bukan admin, pakai userId login
+                userIdToUse = currentUserId;
+            }
+            // Ambil merchant berdasarkan userId yang sudah ditentukan
+            MerchantHelper.getMerchantByUserId(userIdToUse, merchant -> {
+                if (merchant != null) {
+                    txtUsaha.setText(merchant.getUsaha());
+                    txtDeskUsaha.setText(merchant.getDeskripsi());
+                    txtBuka.setText(merchant.getBuka());
+                    txtTutup.setText(merchant.getTutup());
+                    strGambar = merchant.getImage();
+                    usaha.setText(merchant.getUsaha());
+
+                    Glide.with(this)
+                            .load(strGambar)
+                            .placeholder(R.drawable.placeholder_image)
+                            .error(R.drawable.error_image)
+                            .into(gambar);
+                } else {
+                    Log.d("CEK MERCHANT", "Data merchant NULL");
+                }
+            });
         });
     }
 
+
     private void updateData() {
         loadingDialog.show();
+        if (txtUsaha.getText().toString().trim().isEmpty() ||
+                txtDeskUsaha.getText().toString().trim().isEmpty() ||
+                txtBuka.getText().toString().trim().isEmpty() ||
+                txtTutup.getText().toString().trim().isEmpty()) {
 
-        if (txtUsaha.getText().toString().trim().isEmpty() || txtDeskUsaha.getText().toString().trim().isEmpty() ||
-                txtBuka.getText().toString().trim().isEmpty() || txtTutup.getText().toString().trim().isEmpty()) {
             Toast.getInstance(this).showToast("Data Tidak Boleh Ada yang Kosong");
             loadingDialog.dismiss();
             return;
         }
+        String userId = getIntent().getStringExtra("user_id");
+        if (userId == null) {
+            userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference editMerchant = db.collection("merchants").document(userId);
 
-        CloudinaryHelper.uploadImage(this, gambarUri, new CloudinaryHelper.OnUploadCompleteListener() {
-            @Override
-            public void onSuccess(String imageUrl) {
-                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference editMerchant = db.collection("merchants").document(userId);
-                Map<String, Object> updates = new HashMap<>();
-                updates.put("usaha", txtUsaha.getText().toString().trim());
-                updates.put("deskripsi", txtDeskUsaha.getText().toString());
-                updates.put("buka", txtBuka.getText().toString().trim());
-                updates.put("tutup", txtTutup.getText().toString().trim());
-                if (imageUrl != null) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("usaha", txtUsaha.getText().toString().trim());
+        updates.put("deskripsi", txtDeskUsaha.getText().toString().trim());
+        updates.put("buka", txtBuka.getText().toString().trim());
+        updates.put("tutup", txtTutup.getText().toString().trim());
+
+        if (gambarUri != null) {
+            // Upload gambar baru jika ada
+            CloudinaryHelper.uploadImage(this, gambarUri, new CloudinaryHelper.OnUploadCompleteListener() {
+                @Override
+                public void onSuccess(String imageUrl) {
                     updates.put("image", imageUrl);
-                }
-                editMerchant.update(updates)
-                .addOnSuccessListener(aVoid -> {
-                    loadingDialog.dismiss();
-                    Toast.getInstance(DataMerchantActivity.this).showToast("Data Berhasil Diupdate");
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    loadingDialog.dismiss();
-                    Toast.getInstance(DataMerchantActivity.this).showToast("Data Gagal Diupdate");
-                });
-            }
 
-            @Override
-            public void onFailure(String errorMessage) {
+                    editMerchant.update(updates)
+                        .addOnSuccessListener(aVoid -> {
+                            loadingDialog.dismiss();
+                            Toast.getInstance(DataMerchantActivity.this).showToast("Data Berhasil Diupdate Bersama Gambar");
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            loadingDialog.dismiss();
+                            Toast.getInstance(DataMerchantActivity.this).showToast("Data Gagal Diupdate Bersama Gambar");
+                        });
+                }
+
+                @Override
+                public void onFailure(String errorMessage) {
+                    loadingDialog.dismiss();
+                    Toast.getInstance(DataMerchantActivity.this).showToast(errorMessage);
+                }
+            });
+
+        } else {
+            // Tanpa update gambar
+            editMerchant.update(updates)
+            .addOnSuccessListener(aVoid -> {
                 loadingDialog.dismiss();
-                Toast.getInstance(DataMerchantActivity.this).showToast(errorMessage);
-            }
-        });
+                Toast.getInstance(DataMerchantActivity.this).showToast("Data Berhasil Diupdate");
+                finish();
+            })
+            .addOnFailureListener(e -> {
+                loadingDialog.dismiss();
+                Toast.getInstance(DataMerchantActivity.this).showToast("Data Gagal Diupdate");
+            });
+        }
     }
+
 
     private String getFileName(Uri uri) {
         String result = null;

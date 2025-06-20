@@ -62,6 +62,72 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/gray" />
+
+        <LinearLayout
+            android:id="@+id/kelolaMerchant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="16dp"
+            android:background="@drawable/item_background"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:drawablePadding="10dp"
+                android:text="Kelola Data Merchant"
+                android:drawableStart="@drawable/ic_edit"
+                android:drawableTint="@color/black"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_weight="1" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_right"
+                app:tint="@color/black" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
+
+        <LinearLayout
+            android:id="@+id/lapBayarSewa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="16dp"
+            android:background="@drawable/item_background"
+            android:clickable="true"
+            android:focusable="true">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="center_vertical"
+                android:drawablePadding="10dp"
+                android:text="Laporan Pembayaran Sewa Lapak"
+                android:drawableStart="@drawable/ic_laporan"
+                android:drawableTint="@color/black"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_weight="1" />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_right"
+                app:tint="@color/black" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -75,7 +75,7 @@ public class UserHelper {
                 }
             }
             if (!userIds.isEmpty()) {
-                // Ambil maksimal 10 dulu (karena Firestore limit)
+                // Ambil maksimal 25 dulu (karena Firestore limit)
                 List<String> limitedUserIds = userIds.subList(0, Math.min(25, userIds.size()));
                 // Step 2: Query ke users
                 db.collection("users")
@@ -102,6 +102,40 @@ public class UserHelper {
             // Gagal ambil merchant
             callback.onUserListResult(null);
         });
+    }
+
+    public static void getAllMerchant(UserListCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("merchants")
+                .whereEqualTo("status", true)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<String> userIds = new ArrayList<>();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String userId = doc.getString("userId");
+                        if (userId != null) userIds.add(userId);
+                    }
+
+                    if (!userIds.isEmpty()) {
+                        // Ambil data user berdasarkan userId
+                        db.collection("users")
+                                .whereIn("user_id", userIds.subList(0, Math.min(25, userIds.size())))
+                                .get()
+                                .addOnSuccessListener(userSnap -> {
+                                    List<UserModel> userList = new ArrayList<>();
+                                    for (DocumentSnapshot userDoc : userSnap.getDocuments()) {
+                                        UserModel user = userDoc.toObject(UserModel.class);
+                                        userList.add(user);
+                                    }
+                                    callback.onUserListResult(userList);
+                                })
+                                .addOnFailureListener(e -> callback.onUserListResult(null));
+                    } else {
+                        callback.onUserListResult(new ArrayList<>());
+                    }
+                })
+                .addOnFailureListener(e -> callback.onUserListResult(null));
     }
 
 
