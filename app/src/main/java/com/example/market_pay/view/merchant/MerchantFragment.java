@@ -13,7 +13,7 @@ import com.example.market_pay.R;
 
 public class MerchantFragment extends Fragment {
 
-    private LinearLayout dataMerchant;
+    private LinearLayout dataMerchant, bayarSewa;
     private View view;
     public MerchantFragment() {
         // Required empty public constructor
@@ -30,11 +30,15 @@ public class MerchantFragment extends Fragment {
 
     private void initViews() {
         dataMerchant = view.findViewById(R.id.dataMerchant);
+        bayarSewa = view.findViewById(R.id.bayarSewa);
     }
 
     private void initListener() {
         dataMerchant.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), DataMerchantActivity.class));
+        });
+        bayarSewa.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), SewaLapakActivity.class));
         });
     }
 }
