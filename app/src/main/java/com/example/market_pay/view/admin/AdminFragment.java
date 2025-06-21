@@ -13,7 +13,7 @@ import com.example.market_pay.R;
 
 public class AdminFragment extends Fragment {
 
-    private LinearLayout verifikasi, kelolaMerchant;
+    private LinearLayout verifikasi, kelolaMerchant, lapBayarSewa;
 
     public AdminFragment() {
         // Required empty public constructor
@@ -25,12 +25,18 @@ public class AdminFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin, container, false);
         verifikasi = view.findViewById(R.id.verifikasiMerchant);
         kelolaMerchant = view.findViewById(R.id.kelolaMerchant);
+        lapBayarSewa = view.findViewById(R.id.lapBayarSewa);
+
         verifikasi.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), VerifikasiMerchantActivity.class));
         });
         kelolaMerchant.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), KelolaMerchantActivity.class));
         });
+        lapBayarSewa.setOnClickListener(v -> {
+            startActivity(new Intent(requireContext(), LaporanSewaLapakActivity.class));
+        });
+
         return view;
     }
 }
