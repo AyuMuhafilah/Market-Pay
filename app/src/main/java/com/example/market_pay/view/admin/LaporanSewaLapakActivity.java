@@ -14,7 +14,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.widget.ImageView;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -104,7 +103,7 @@ public class LaporanSewaLapakActivity extends AppCompatActivity {
                                         String formattedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                                                 .format(bayar.getTgl_bayar().toDate());
 
-                                        if (bulanLaporan.equals("BULAN TIDAK DIKETAHUI")) {
+                                        if (bulanLaporan.isEmpty()) {
                                             Locale locale = new Locale("id", "ID");
                                             bulanLaporan = new SimpleDateFormat("MMMM", locale).format(bayar.getTgl_bayar().toDate()).toUpperCase();
                                             tahunLaporan = new SimpleDateFormat("yyyy", locale).format(bayar.getTgl_bayar().toDate());
@@ -158,8 +157,9 @@ public class LaporanSewaLapakActivity extends AppCompatActivity {
         int startX = 40;
         int startY = 100;
         int rowHeight = 40;
-        int colWidth = 130;
-        int numCols = 4;
+
+        int colNoWidth = 50;
+        int colOtherWidth = 116;
 
         Paint borderPaint = new Paint();
         borderPaint.setColor(Color.BLACK);
@@ -176,12 +176,13 @@ public class LaporanSewaLapakActivity extends AppCompatActivity {
         headerBgPaint.setStyle(Paint.Style.FILL);
 
         // Header
-        canvas.drawRect(startX, startY, startX + colWidth * numCols, startY + rowHeight, headerBgPaint);
-        canvas.drawRect(startX, startY, startX + colWidth * numCols, startY + rowHeight, borderPaint);
-        canvas.drawText("Tanggal", centerText("Tanggal", startX, colWidth, headerTextPaint), startY + 25, headerTextPaint);
-        canvas.drawText("Nama Merchant", centerText("Nama Merchant", startX + colWidth, colWidth, headerTextPaint), startY + 25, headerTextPaint);
-        canvas.drawText("Status", centerText("Status", startX + colWidth * 2, colWidth, headerTextPaint), startY + 25, headerTextPaint);
-        canvas.drawText("Nominal", centerText("Nominal", startX + colWidth * 3, colWidth, headerTextPaint), startY + 25, headerTextPaint);
+        canvas.drawRect(startX, startY, startX + colNoWidth + colOtherWidth * 4, startY + rowHeight, headerBgPaint);
+        canvas.drawRect(startX, startY, startX + colNoWidth + colOtherWidth * 4, startY + rowHeight, borderPaint);
+        canvas.drawText("No", centerText("No", startX, colNoWidth, headerTextPaint), startY + 25, headerTextPaint);
+        canvas.drawText("Tanggal", centerText("Tanggal", startX + colNoWidth, colOtherWidth, headerTextPaint), startY + 25, headerTextPaint);
+        canvas.drawText("Nama Merchant", centerText("Nama Merchant", startX + colNoWidth + colOtherWidth, colOtherWidth, headerTextPaint), startY + 25, headerTextPaint);
+        canvas.drawText("Status", centerText("Status", startX + colNoWidth + colOtherWidth * 2, colOtherWidth, headerTextPaint), startY + 25, headerTextPaint);
+        canvas.drawText("Nominal", centerText("Nominal", startX + colNoWidth + colOtherWidth * 3, colOtherWidth, headerTextPaint), startY + 25, headerTextPaint);
 
         Paint cellTextPaint = new Paint();
         cellTextPaint.setColor(Color.BLACK);
@@ -190,12 +191,15 @@ public class LaporanSewaLapakActivity extends AppCompatActivity {
         int y = startY + rowHeight;
         int totalNominal = 0;
 
-        for (BayarSewaWithMerchant row : dataList) {
-            canvas.drawRect(startX, y, startX + colWidth * numCols, y + rowHeight, borderPaint);
-            canvas.drawText(row.tanggal, centerText(row.tanggal, startX, colWidth, cellTextPaint), y + 25, cellTextPaint);
-            canvas.drawText(row.namaUser, centerText(row.namaUser, startX + colWidth, colWidth, cellTextPaint), y + 25, cellTextPaint);
-            canvas.drawText(row.status, centerText(row.status, startX + colWidth * 2, colWidth, cellTextPaint), y + 25, cellTextPaint);
-            canvas.drawText(row.nominal, centerText(row.nominal, startX + colWidth * 3, colWidth, cellTextPaint), y + 25, cellTextPaint);
+        for (int i = 0; i < dataList.size(); i++) {
+            BayarSewaWithMerchant row = dataList.get(i);
+            canvas.drawRect(startX, y, startX + colNoWidth + colOtherWidth * 4, y + rowHeight, borderPaint);
+
+            canvas.drawText(String.valueOf(i + 1), centerText(String.valueOf(i + 1), startX, colNoWidth, cellTextPaint), y + 25, cellTextPaint);
+            canvas.drawText(row.tanggal, centerText(row.tanggal, startX + colNoWidth, colOtherWidth, cellTextPaint), y + 25, cellTextPaint);
+            canvas.drawText(row.namaUser, centerText(row.namaUser, startX + colNoWidth + colOtherWidth, colOtherWidth, cellTextPaint), y + 25, cellTextPaint);
+            canvas.drawText(row.status, centerText(row.status, startX + colNoWidth + colOtherWidth * 2, colOtherWidth, cellTextPaint), y + 25, cellTextPaint);
+            canvas.drawText(row.nominal, centerText(row.nominal, startX + colNoWidth + colOtherWidth * 3, colOtherWidth, cellTextPaint), y + 25, cellTextPaint);
 
             if (row.status.equals("LUNAS")) {
                 try {
@@ -207,9 +211,10 @@ public class LaporanSewaLapakActivity extends AppCompatActivity {
             }
             y += rowHeight;
         }
-        canvas.drawRect(startX, y, startX + colWidth * numCols, y + rowHeight, borderPaint);
-        canvas.drawText("TOTAL", centerText("TOTAL", startX, colWidth * 3, cellTextPaint), y + 25, cellTextPaint);
-        canvas.drawText("Rp " + totalNominal, centerText("Rp " + totalNominal, startX + colWidth * 3, colWidth, cellTextPaint), y + 25, cellTextPaint);
+
+        canvas.drawRect(startX, y, startX + colNoWidth + colOtherWidth * 4, y + rowHeight, borderPaint);
+        canvas.drawText("TOTAL", centerText("TOTAL", startX, colNoWidth + colOtherWidth * 3, cellTextPaint), y + 25, cellTextPaint);
+        canvas.drawText("Rp " + totalNominal, centerText("Rp " + totalNominal, startX + colNoWidth + colOtherWidth * 3, colOtherWidth, cellTextPaint), y + 25, cellTextPaint);
 
         pdfDocument.finishPage(page);
         savePdfToDownloads(pdfDocument);
